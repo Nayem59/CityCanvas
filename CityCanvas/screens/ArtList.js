@@ -1,12 +1,12 @@
-import { View, Text } from "react-native";
+import { View, Text, SafeAreaView } from "react-native";
 import React from "react";
 
 const ArtList = () => {
-  return (
-    <View>
-      <Text>ArtList</Text>
-    </View>
-  );
+	return (
+		<SafeAreaView>
+			<Text>ArtList</Text>
+		</SafeAreaView>
+	);
 };
 
 export default ArtList;

@@ -1,12 +1,12 @@
-import { View, Text } from "react-native";
+import { View, Text, SafeAreaView } from "react-native";
 import React from "react";
 
 const AddArt = () => {
-  return (
-    <View>
-      <Text>AddArt</Text>
-    </View>
-  );
+	return (
+		<SafeAreaView>
+			<Text>AddArt</Text>
+		</SafeAreaView>
+	);
 };
 
 export default AddArt;
