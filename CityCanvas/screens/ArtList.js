@@ -25,7 +25,6 @@ const ArtList = () => {
     }
     getArtWork();
   }, []);
-  // console.log(art);
 
   return (
     <SafeAreaView>
