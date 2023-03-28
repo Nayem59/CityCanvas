@@ -1,5 +1,3 @@
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaView, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeStack from "./nav/HomeStack";
@@ -16,4 +14,5 @@ export default function App() {
 			{isLoggedIn ? <HomeStack /> : <LoginStack />}
 		</NavigationContainer>
 	);
+
 }
