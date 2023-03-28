@@ -9,6 +9,8 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+city-canvas/
+
 
 # macOS
 .DS_Store
