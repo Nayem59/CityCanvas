@@ -1,21 +1,9 @@
-// import { View, Text, SafeAreaView } from "react-native";
-// import React from "react";
-
-// const ArtList = () => {
-// 	return (
-// 		<SafeAreaView>
-// 			<Text>ArtList</Text>
-// 		</SafeAreaView>
-// 	);
-// };
-
-// export default ArtList;
-
 import { View, Text, FlatList } from "react-native";
 import React, { useState, useEffect } from "react";
 import { db } from "../firebaseConfig";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { collection, getDocs, setDoc, onSnapshot } from "firebase/firestore";
+import ArtCard from "../components/ArtCard";
 
 const ArtList = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -32,21 +20,21 @@ const ArtList = () => {
           setIsLoading(false);
         })
         .catch((err) => {
-            console.log(err);
+          console.log(err);
         });
     }
     getArtWork();
   }, []);
-  console.log(art);
+  // console.log(art);
 
   return (
     <SafeAreaView>
       <View>
         <Text>
           <FlatList
-            data={artCol}
+            data={art}
             renderItem={({ item }) => {
-              return <Text>{item.name}</Text>;
+              return <ArtCard item={item}/>
             }}
           />
         </Text>

@@ -1,10 +1,11 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const ArtCard = () => {
+const ArtCard = ({item}) => {
+  console.log(item);
   return (
     <View>
-      <Text>ArtCard</Text>
+      <Text>{item.title}</Text>
     </View>
   )
 }
