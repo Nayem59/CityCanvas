@@ -15,6 +15,7 @@ import * as Location from "expo-location";
 import { db } from "../firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
 import { AntDesign } from "@expo/vector-icons";
+import { EvilIcons } from "@expo/vector-icons";
 
 const ArtMap = () => {
 	const [isLoading, setIsLoading] = useState(true);
@@ -52,31 +53,33 @@ const ArtMap = () => {
 		const { latitude, longitude } = location.location_geopoint;
 		const { title, image, address_postcode, address_street, likes_count } =
 			location;
+		const id = uuid.v4();
 		return (
-			<Marker coordinate={{ latitude, longitude }} key={uuid.v4()}>
+			<Marker coordinate={{ latitude, longitude }} key={id}>
 				<FontAwesome name="map-marker" size={40} color="#C13584" />
 				<Callout className="w-64 h-64 p-0 rounded-xl">
-					<View className="flex flex-col m-0 w-44 h-2/3">
+					<View className="flex flex-col m-0 mb-2 w-44 h-2/3">
 						<Text className="w-64 h-full mt-1 ">
 							<Image
 								source={{ uri: image }}
 								resizeMode="cover"
-								className="w-64 h-full rounded-md"
+								className="w-64 h-full mb-2 rounded-md"
 							/>
 						</Text>
-						<View className="flex flex-col mt-1 gap-y-1">
-							<Text className="w-full text-pink">
-								{title ? title : "comingsoon"}
+						<View className="flex flex-col mt-1 gap-1-2">
+							<Text className="w-full font-bold text-pink">
+								{title ? title : "Untitled"}
 							</Text>
-							<View className="flex flex-row items-center gap-1">
-								<AntDesign name="like1" size={20} color="gray" />
+							<View className="flex flex-row items-center gap-1 p-1">
+								<AntDesign name="heart" size={20} color="gray" />
 								<Text className="w-full">{likes_count}</Text>
 							</View>
-							<View className="flex flex-row items-center gap-1">
-								<FontAwesome name="map-marker" size={20} color="gray" />
-								<Text className="w-full text-sm">
+							<View className="flex flex-row items-center justify-between gap-1 px-2 w-52">
+								<FontAwesome name="map-marker" size={22} color="gray" />
+								<Text className="w-full">
 									{address_postcode}, {address_street}
 								</Text>
+								<EvilIcons name="external-link" size={28} color="#C13584" />
 							</View>
 						</View>
 					</View>
