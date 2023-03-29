@@ -30,7 +30,7 @@ module.exports = {
         // fontSize:13px - button text/not yet registered text
         // fontSize:16px - continue with apple/google text
         //poppins doesn't work
-        poppins: ["Poppins", "sans-serif"],
+        // poppins: ["Poppins", "sans-serif"],
         sans: ["Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
       },
       borderRadius: {
