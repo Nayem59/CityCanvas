@@ -1,4 +1,3 @@
-import { View, Text } from "react-native";
 import React from "react";
 import ArtMap from "../screens/ArtMap";
 import ArtList from "../screens/ArtList";
