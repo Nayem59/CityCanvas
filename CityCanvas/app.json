@@ -7,7 +7,7 @@
 		"icon": "./assets/icon.png",
 		"userInterfaceStyle": "light",
 		"splash": {
-			"image": "./assets/splash-screen.jpg",
+			"image": "./assets/splash-screen.svg",
 			"resizeMode": "contain",
 			"backgroundColor": "#ffffff"
 		},
