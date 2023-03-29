@@ -1,22 +1,28 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Button, TouchableHighlight } from "react-native";
 import React, { useEffect, useState } from "react";
 import { db } from "../firebaseConfig";
 import { getDoc, doc } from "firebase/firestore";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Entypo } from "@expo/vector-icons";
 
-const StreetArtInfo = () => {
+const StreetArtInfo = ({ route, navigation }) => {
   const [artInfo, setArtInfo] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const { id } = route.params;
 
   useEffect(() => {
-    // console.log(db);
-    setIsLoading(true);
-    const docRef = doc(db, "art", "N5hqYaendejOZMP2WwM6");
-    getDoc(docRef).then((data) => {
-      setArtInfo(data.data());
-    });
-    setIsLoading(false);
-  }, []);
+    const testFunc = (id) => {
+      console.log(id);
+      setIsLoading(true);
+      let docRef = doc(db, "art", id);
+      return getDoc(docRef).then((data) => {
+        console.log(data.data());
+        setArtInfo(data.data());
+        setIsLoading(false);
+      });
+    };
+    testFunc(id);
+  }, [id]);
 
   return (
     <SafeAreaView>
@@ -33,6 +39,13 @@ const StreetArtInfo = () => {
           </Text>
           <Text>{artInfo.likes_count}</Text>
           <Text>{artInfo.date_created.toDate().toDateString()}</Text>
+
+          <TouchableHighlight onPress={() => {}}>
+            <View>
+              <Button title="Get Location"></Button>
+              <Entypo name="location-pin" size={24} color="black" />
+            </View>
+          </TouchableHighlight>
         </View>
       )}
     </SafeAreaView>
