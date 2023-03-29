@@ -21,7 +21,7 @@ const AppButton = ({ title, primary, handlePress, icon }) => {
 					onPress={handlePress}
 				>
 					<AntDesign name={icon} size={20} color="#C13584" />
-					<Text className="w-1/2 ml-4 text-center uppercase text-md">
+					<Text className="w-1/2 ml-2 text-center uppercase text-md">
 						{title}
 					</Text>
 				</TouchableOpacity>

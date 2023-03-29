@@ -39,14 +39,14 @@ const Login = ({ navigation }) => {
 				<Input
 					placeholder="Email"
 					value={email}
-					setEmail={setEmail}
+					setState={setEmail}
 					autoCapitalize="none"
 					autoCorrect={false}
 				/>
 				<Input
 					placeholder="Password"
 					value={password}
-					setEmail={setPassword}
+					setState={setPassword}
 					secure={true}
 					autoCorrect={false}
 				/>

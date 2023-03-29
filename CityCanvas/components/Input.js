@@ -4,7 +4,7 @@ import React from "react";
 const Input = ({
 	placeholder,
 	value,
-	setEmail,
+	setState,
 	autoCapitalize,
 	secure,
 	autoCorrect,
@@ -14,7 +14,7 @@ const Input = ({
 			<TextInput
 				placeholder={placeholder}
 				value={value}
-				onChangeText={(input) => setEmail(input)}
+				onChangeText={(input) => setState(input)}
 				autoCapitalize={autoCapitalize}
 				secureTextEntry={secure}
 				autoCorrect={autoCorrect}
