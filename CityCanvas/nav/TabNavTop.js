@@ -12,6 +12,7 @@ const TabNavTop = () => {
 			screenOptions={{
 				tabBarActiveTintColor: "#C13584",
 				tabBarStyle: { backgroundColor: "#ffffff" },
+				tabBarIndicatorStyle: { backgroundColor: "#C13584" },
 			}}
 		>
 			<TopTab.Screen name="Map" component={ArtMap} />
