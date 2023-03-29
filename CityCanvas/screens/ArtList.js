@@ -1,8 +1,7 @@
-import { View, Text, FlatList } from "react-native";
+import { View, Text, FlatList, SafeAreaView, ActivityIndicator} from "react-native";
 import React, { useState, useEffect } from "react";
 import { db } from "../firebaseConfig";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { collection, getDocs, setDoc, onSnapshot } from "firebase/firestore";
+import { collection, getDocs} from "firebase/firestore";
 import ArtCard from "../components/ArtCard";
 
 const ArtList = () => {
@@ -28,16 +27,23 @@ const ArtList = () => {
 
   return (
     <SafeAreaView>
-      <View>
-        <Text>
-          <FlatList
-            data={art}
-            renderItem={({ item }) => {
-              return <ArtCard item={item}/>
-            }}
-          />
-        </Text>
-      </View>
+      {isLoading ? (
+        <View className="flex items-center justify-center flex-1">
+          <ActivityIndicator size="large" color="#C13584" />
+          <Text className="text-pink">loading</Text>
+        </View>
+      ) : (
+        <View>
+          <Text>
+            <FlatList
+              data={art}
+              renderItem={({ item }) => {
+                return <ArtCard item={item} />;
+              }}
+            />
+          </Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
