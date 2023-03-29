@@ -1,4 +1,3 @@
-import { View, Text } from "react-native";
 import React from "react";
 import ArtMap from "../screens/ArtMap";
 import ArtList from "../screens/ArtList";
@@ -12,6 +11,7 @@ const TabNavTop = () => {
 			screenOptions={{
 				tabBarActiveTintColor: "#C13584",
 				tabBarStyle: { backgroundColor: "#ffffff" },
+				tabBarIndicatorStyle: { backgroundColor: "#C13584" },
 			}}
 		>
 			<TopTab.Screen name="Map" component={ArtMap} />
