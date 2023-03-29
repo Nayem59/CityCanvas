@@ -11,7 +11,15 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from '../firebaseConfig';
-import { doc, setDoc } from 'firebase/firestore';
+import {
+  doc,
+  setDoc,
+  getDoc,
+  query,
+  collection,
+  where,
+  writeBatch,
+} from 'firebase/firestore';
 import uuid from 'react-native-uuid';
 
 const SignupSchema = Yup.object({
@@ -42,23 +50,47 @@ const SignupSchema = Yup.object({
 });
 
 const SignUp = () => {
-  const register = (email, password) => {
-    return createUserWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        console.log('user created');
-      })
-      .catch((error) => {
-        console.log(error, '<error');
-        Alert.alert('oops, email already exists');
-      });
+  const register = (firstName, lastName, username, email, password) => {
+    const batch = writeBatch(db);
+    const userData = { firstName, lastName, username, email };
+    const docRef = doc(db, 'usernames', username);
+
+    const checkUsernamePromise = getDoc(docRef).then((snapShot) => {
+      if (snapShot.exists()) {
+        Alert.alert('username already exists');
+      } else {
+        console.log("doc doesn't exist");
+      }
+    });
+
+    const createUserPromise = createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    ).then(() => {
+      console.log('user created');
+    });
+
+    return Promise.all([checkUsernamePromise, createUserPromise]).then(() => {
+      console.log("we're here");
+      console.log(userData, '<userData');
+      const writeUsers = doc(db, 'users');
+      const writeUsernames = doc(db, 'usernames');
+
+      batch.set(writeUsers, userData);
+      batch.set(writeUsernames, { username: userData.username });
+      batch.commit();
+    });
+
+    // .catch((error) => {
+    //   console.log(error, '<error');
+    //   Alert.alert('oops, email already exists');
+    // });
   };
 
-  const createUser = (firstName, lastName, username, email) => {
-    const userData = { firstName, lastName, username, email };
-    return setDoc(doc(db, 'users', uuid.v4()), userData).then(() => {
-      console.log('data posted');
-    });
-  };
+  // const createUser = async (firstName, lastName, username, email) => {
+  //   const docSnap = await getDoc(docRef);
+  // };
 
   return (
     <SafeAreaView>
@@ -81,8 +113,7 @@ const SignUp = () => {
           password,
           confirmPassword,
         }) => {
-          register(email, password);
-          createUser(firstName, lastName, username, email);
+          register(firstName, lastName, username, email, password);
         }}
       >
         {({
