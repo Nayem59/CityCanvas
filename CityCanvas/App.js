@@ -7,12 +7,11 @@ import { useState } from "react";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-	const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
-	return (
-		<NavigationContainer>
-			{isLoggedIn ? <HomeStack /> : <LoginStack />}
-		</NavigationContainer>
-	);
-
+  return (
+    <NavigationContainer>
+      {isLoggedIn ? <HomeStack /> : <LoginStack />}
+    </NavigationContainer>
+  );
 }
