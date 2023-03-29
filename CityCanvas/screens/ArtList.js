@@ -1,21 +1,29 @@
-import { View, Text, FlatList, SafeAreaView, ActivityIndicator} from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  SafeAreaView,
+  ActivityIndicator, Button
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import { db } from "../firebaseConfig";
-import { collection, getDocs} from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import ArtCard from "../components/ArtCard";
 
-const ArtList = () => {
+const ArtList = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(true);
   const artCol = collection(db, "art");
   const [art, setArt] = useState([]);
 
+  
   useEffect(() => {
     setIsLoading(true);
     function getArtWork() {
       return getDocs(artCol)
-        .then((artworksSnapShot) => {
-          const artWorkList = artworksSnapShot.docs.map((doc) => doc.data());
-          setArt(artWorkList);
+      .then((artworksSnapShot) => {
+        const artWorkList = artworksSnapShot.docs.map((doc) => doc.data());
+        setArt(artWorkList);
+        console.log(artCol)
           setIsLoading(false);
         })
         .catch((err) => {
@@ -24,6 +32,7 @@ const ArtList = () => {
     }
     getArtWork();
   }, []);
+  console.log(art);
 
   return (
     <SafeAreaView>
@@ -34,6 +43,12 @@ const ArtList = () => {
         </View>
       ) : (
         <View>
+            <Button
+              onPress={() => {
+                navigation.navigate("StreetArtInfo");
+              }}
+              title="click me"
+            />
           <Text>
             <FlatList
               data={art}
@@ -44,8 +59,11 @@ const ArtList = () => {
           </Text>
         </View>
       )}
+       <Text>ArtList</Text>
     </SafeAreaView>
   );
 };
+
+
 
 export default ArtList;
