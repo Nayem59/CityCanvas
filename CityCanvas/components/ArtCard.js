@@ -31,8 +31,7 @@ const ArtCard = ({ item }) => {
           <AntDesign name="heart" size={20} color="#C13584" />{" "}
           {item.likes_count}
         </Text>
-
-        <Button
+        {/* <Button
           onPress={() => {
             db.collection("art")
               .where("address_building_number", "==", "1-3")
@@ -44,8 +43,8 @@ const ArtCard = ({ item }) => {
                 console.log(querySnapshot);
               });
           }}
-          title="Press Me"
-        />
+          title="Press Me" 
+        />  */}
       </View>
     </View>
   );
