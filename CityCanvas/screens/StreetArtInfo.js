@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import { db } from "../firebaseConfig";
 import { getDoc, doc } from "firebase/firestore";
@@ -62,9 +62,12 @@ const StreetArtInfo = ({ route, navigation }) => {
 									{artInfo.date_created.toDate().toDateString()}
 								</Text>
 							</View>
-							<Text className="mb-2 text-lg text-justify h-44">
-								{artInfo.description}
-							</Text>
+							<ScrollView className="mb-2 overflow-scroll h-44">
+								<Text className="text-lg text-justify">
+									{artInfo.description}
+								</Text>
+							</ScrollView>
+
 							<Text className="mb-1 text-stone-400">
 								<Entypo name="location-pin" size={20} color="#C13584" />
 								{artInfo.address_building_number} {artInfo.address_street},{" "}
