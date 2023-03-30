@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   ActivityIndicator,
   Button,
+  TouchableOpacity,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { db } from "../firebaseConfig";
@@ -21,9 +22,13 @@ const ArtList = ({ navigation }) => {
     function getArtWork() {
       return getDocs(artCol)
         .then((artworksSnapShot) => {
-          const artWorkList = artworksSnapShot.docs.map((doc) => doc.data());
+          const artWorkList = artworksSnapShot.docs.map((doc) => {
+            const id = doc.id;
+            const singleDoc = doc.data();
+            return { ...singleDoc, id };
+          });
+
           setArt(artWorkList);
-          console.log(artCol);
           setIsLoading(false);
         })
         .catch((err) => {
@@ -32,7 +37,6 @@ const ArtList = ({ navigation }) => {
     }
     getArtWork();
   }, []);
-  console.log(art);
 
   return (
     <SafeAreaView>
@@ -45,18 +49,27 @@ const ArtList = ({ navigation }) => {
         <View>
           <Button
             onPress={() => {
-              navigation.navigate("StreetArtInfo");
+              navigation.navigate("StreetArtInfo", { navigation });
             }}
             title="click me"
           />
-          <Text>
-            <FlatList
-              data={art}
-              renderItem={({ item }) => {
-                return <ArtCard item={item} />;
-              }}
-            />
-          </Text>
+
+          <FlatList
+            data={art}
+            renderItem={({ item }) => {
+              return (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("StreetArtInfo", {
+                      id: item.id,
+                    });
+                  }}
+                >
+                  <ArtCard item={item} />
+                </TouchableOpacity>
+              );
+            }}
+          />
         </View>
       )}
       <Text>ArtList</Text>
