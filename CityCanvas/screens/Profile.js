@@ -9,27 +9,38 @@ const Stack = createNativeStackNavigator();
 
 const Profile = ({ uid, navigation }) => {
   const [user, setUser] = useState({});
+  const [profileChange, setProfileChange] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  console.log('I am inside profile');
+
   useEffect(() => {
     setIsLoading(true);
     const userDoc = doc(db, 'users', uid);
     getDoc(userDoc).then((user) => {
       const userData = user.data();
       setUser(userData);
+      setProfileChange(false);
       setIsLoading(false);
     });
-  }, [uid]);
+  }, [uid, profileChange]);
 
   return isLoading ? (
     <Text>Loading...</Text>
   ) : (
     <SafeAreaView className="flex flex-1 bg-white">
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="ProfileInfo">
           {(props) => <ProfileInfo {...props} user={user} />}
         </Stack.Screen>
-        <Stack.Screen name="EditProfile" component={EditProfile} />
+        <Stack.Screen name="EditProfile">
+          {(props) => (
+            <EditProfile
+              {...props}
+              user={user}
+              uid={uid}
+              setProfileChange={setProfileChange}
+            />
+          )}
+        </Stack.Screen>
       </Stack.Navigator>
     </SafeAreaView>
   );

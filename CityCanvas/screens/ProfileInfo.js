@@ -4,36 +4,38 @@ import AppButton from '../components/AppButton';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
 
-const ProfileInfo = ({ user }) => {
+const ProfileInfo = ({ user, navigation }) => {
   const handleUserLogout = () => {
     signOut(auth).then(() => {});
   };
-  console.log('I am inside profile info');
-  console.log(user, '<user in profile info');
+
   return (
-    <SafeAreaView>
-      <View>
-        <Text>Hi {user.firstName}!</Text>
+    <SafeAreaView className="w-full h-full">
+      <View className="mt-10 w-10/12 mx-auto">
+        <View>
+          <Text className="font-bold text-black text-3xl pl-2">
+            Hi <Text className="text-pink">{user.firstName}! 👋</Text>
+          </Text>
+        </View>
+        <View className="my-10 rounded-3xl bg-white px-5 py-5">
+          <Text className="font-bold text-xl pb-3">Profile Details:</Text>
+          <Text className="pb-2 text-base">First name: {user.firstName}</Text>
+          <Text className="pb-2 text-base">Last name: {user.lastName}</Text>
+          <Text className="pb-2 text-base">Username: {user.username}</Text>
+          <Text className="pb-1 text-base">Email: {user.email}</Text>
+        </View>
+        <AppButton
+          title="Edit profile"
+          primary
+          icon="edit"
+          handlePress={() => navigation.navigate('EditProfile')}
+        />
+        <AppButton
+          title="Sign out"
+          icon="logout"
+          handlePress={handleUserLogout}
+        />
       </View>
-      <View>
-        <Text>Profile Details:</Text>
-        <Text>First name: {user.firstName}</Text>
-        <Text>Last name: {user.lastName}</Text>
-        <Text>Username: {user.username}</Text>
-        <Text>Email: {user.email}</Text>
-      </View>
-      <AppButton
-        title="Edit profile"
-        primary
-        icon="edit"
-        handlePress={() => {}}
-      />
-      <AppButton
-        title="Sign out"
-        primary
-        icon="logout"
-        handlePress={handleUserLogout}
-      />
     </SafeAreaView>
   );
 };
