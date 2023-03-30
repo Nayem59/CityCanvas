@@ -1,11 +1,4 @@
-import {
-	View,
-	Text,
-	Image,
-	Button,
-	TouchableHighlight,
-	TouchableOpacity,
-} from "react-native";
+import { View, Text, Image } from "react-native";
 import React, { useEffect, useState } from "react";
 import { db } from "../firebaseConfig";
 import { getDoc, doc } from "firebase/firestore";
@@ -21,11 +14,9 @@ const StreetArtInfo = ({ route }) => {
 
 	useEffect(() => {
 		const testFunc = (id) => {
-			console.log(id);
 			setIsLoading(true);
 			let docRef = doc(db, "art", id);
 			return getDoc(docRef).then((data) => {
-				console.log(data.data());
 				setArtInfo(data.data());
 				setIsLoading(false);
 			});
