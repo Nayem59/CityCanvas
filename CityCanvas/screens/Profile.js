@@ -1,14 +1,16 @@
-import { Text, SafeAreaView, View } from 'react-native';
+import { Text, SafeAreaView } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import AppButton from '../components/AppButton';
-import { signOut } from 'firebase/auth';
-import { auth, db } from '../firebaseConfig';
+import { db } from '../firebaseConfig';
 import { doc, getDoc } from 'firebase/firestore';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import EditProfile from './EditProfile';
+import ProfileInfo from './ProfileInfo';
+const Stack = createNativeStackNavigator();
 
 const Profile = ({ uid, navigation }) => {
   const [user, setUser] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-
+  console.log('I am inside profile');
   useEffect(() => {
     setIsLoading(true);
     const userDoc = doc(db, 'users', uid);
@@ -19,36 +21,16 @@ const Profile = ({ uid, navigation }) => {
     });
   }, [uid]);
 
-  const handleUserLogout = () => {
-    signOut(auth).then(() => {});
-  };
-
   return isLoading ? (
     <Text>Loading...</Text>
   ) : (
-    <SafeAreaView>
-      <View>
-        <Text>Hi {user.firstName}!</Text>
-      </View>
-      <View>
-        <Text>Profile Details:</Text>
-        <Text>First name: {user.firstName}</Text>
-        <Text>Last name: {user.lastName}</Text>
-        <Text>Username: {user.username}</Text>
-        <Text>Email: {user.email}</Text>
-      </View>
-      <AppButton
-        title="Edit profile"
-        primary
-        icon="edit"
-        handlePress={() => {}}
-      />
-      <AppButton
-        title="Sign out"
-        primary
-        icon="logout"
-        handlePress={handleUserLogout}
-      />
+    <SafeAreaView className="flex flex-1 bg-white">
+      <Stack.Navigator>
+        <Stack.Screen name="ProfileInfo">
+          {(props) => <ProfileInfo {...props} user={user} />}
+        </Stack.Screen>
+        <Stack.Screen name="EditProfile" component={EditProfile} />
+      </Stack.Navigator>
     </SafeAreaView>
   );
 };
