@@ -17,9 +17,7 @@ const Login = ({ navigation }) => {
 
 	const signIn = () => {
 		signInWithEmailAndPassword(auth, email, password)
-			.then(() => {
-				console.log("user signed in");
-			})
+			.then(() => {})
 			.catch((error) => {
 				console.log(error);
 				Alert.alert("Wrong email or password");

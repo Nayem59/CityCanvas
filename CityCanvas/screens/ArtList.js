@@ -11,6 +11,7 @@ import React, { useState, useEffect } from "react";
 import { db } from "../firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
 import ArtCard from "../components/ArtCard";
+import LikeArt from "../components/LikeArt";
 
 const ArtList = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -47,13 +48,6 @@ const ArtList = ({ navigation }) => {
         </View>
       ) : (
         <View>
-          <Button
-            onPress={() => {
-              navigation.navigate("StreetArtInfo", { navigation });
-            }}
-            title="click me"
-          />
-
           <FlatList
             data={art}
             renderItem={({ item }) => {
@@ -72,7 +66,6 @@ const ArtList = ({ navigation }) => {
           />
         </View>
       )}
-      <Text>ArtList</Text>
     </SafeAreaView>
   );
 };
