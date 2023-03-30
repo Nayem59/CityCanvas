@@ -5,26 +5,41 @@ import { db } from "../firebaseConfig";
 import { doc, updateDoc, increment } from "firebase/firestore";
 
 const LikeArt = ({ itemId, item }) => {
-	const [likes, setLikes] = useState(0);
-	const incLikes = () => {
-		const likesRef = doc(db, "art", itemId);
-		updateDoc(likesRef, { likes_count: increment(1) });
-		return likesRef;
-	};
+  const [liked, setLiked] = useState(false);
+  const [renderLikesCount, setRenderLikesCount] = useState(item.likes_count);
 
-	return (
-		<TouchableOpacity
-			onPress={() => {
-				incLikes();
-				alert("You liked it");
-			}}
-		>
-			<Text className="absolute bottom-0 right-0 p-1 ">
-				<AntDesign name="heart" size={20} color="#C13584" />{" "}
-				<Text className="font-semibold">{item.likes_count} </Text>
-			</Text>
-		</TouchableOpacity>
-	);
+  const updateLikes = () => {
+    liked ? decLikes() : incLikes();
+  };
+
+  const incLikes = () => {
+    const likesRef = doc(db, "art", itemId);
+    setRenderLikesCount((current) => current + 1)
+    updateDoc(likesRef, { likes_count: increment(1) });
+    setLiked(true);
+    return likesRef;
+  };
+  const decLikes = () => {
+    const unlikeRef = doc(db, "art", itemId);
+    setRenderLikesCount((current) => current - 1)
+    updateDoc(unlikeRef, { likes_count: increment(-1) });
+    setLiked(false);
+    return unlikeRef;
+  };
+
+  return (
+    <TouchableOpacity
+      onPress={() => {
+        updateLikes();
+      }}
+    >
+      <Text className="absolute bottom-0 right-0 p-1 ">
+        <AntDesign 
+        name={ liked ? "heart" : "hearto"} size={20} color="#C13584" />{" "}
+        <Text className="font-semibold">{renderLikesCount} </Text>
+      </Text>
+    </TouchableOpacity>
+  );
 };
 
 export default LikeArt;
