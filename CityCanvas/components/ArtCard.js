@@ -1,8 +1,7 @@
 import { View, Text, Image, StyleSheet, Button, LogBox } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { db } from "../firebaseConfig";
+import LikeArt from "./LikeArt";
 
 const ArtCard = ({ item, route }) => {
   return (
@@ -26,12 +25,8 @@ const ArtCard = ({ item, route }) => {
           {item.address_building_number} {item.address_street},{" "}
           {item.address_city} {item.address_postcode}
         </Text>
-
-        <Text className="self-end mt-5 mr-2">
-          <AntDesign name="heart" size={20} color="#C13584" />{" "}
-          {item.likes_count}
-        </Text>
       </View>
+      <LikeArt itemId={item.id} item={item} />
     </View>
   );
 };
