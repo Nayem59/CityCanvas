@@ -23,7 +23,6 @@ const ArtList = ({ navigation }) => {
         .then((artworksSnapShot) => {
           const artWorkList = artworksSnapShot.docs.map((doc) => doc.data());
           setArt(artWorkList);
-          console.log(artCol);
           setIsLoading(false);
         })
         .catch((err) => {
@@ -32,7 +31,7 @@ const ArtList = ({ navigation }) => {
     }
     getArtWork();
   }, []);
-  console.log(art);
+
 
   return (
     <SafeAreaView>

@@ -9,7 +9,6 @@ const StreetArtInfo = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // console.log(db);
     setIsLoading(true);
     const docRef = doc(db, "art", "N5hqYaendejOZMP2WwM6");
     getDoc(docRef).then((data) => {
