@@ -38,6 +38,7 @@ const ArtList = ({ navigation }) => {
     getArtWork();
   }, []);
 
+
   return (
     <SafeAreaView>
       {isLoading ? (
