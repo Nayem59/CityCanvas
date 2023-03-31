@@ -10,7 +10,7 @@ const ProfileInfo = ({ user, navigation }) => {
 	};
 
 	return (
-		<SafeAreaView className="w-full h-full">
+		<SafeAreaView className="w-full h-full bg-white">
 			<View className="w-10/12 mx-auto mt-10">
 				<View>
 					<Text className="pl-2 text-3xl font-bold text-black">

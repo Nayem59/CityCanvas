@@ -13,10 +13,11 @@ import { collection, getDocs } from "firebase/firestore";
 import ArtCard from "../components/ArtCard";
 import LikeArt from "../components/LikeArt";
 
-const ArtList = ({ navigation }) => {
+const ArtList = ({ navigation, objectProp }) => {
 	const [isLoading, setIsLoading] = useState(true);
 	const artCol = collection(db, "art");
 	const [art, setArt] = useState([]);
+	const { renderComponent, setRenderComponent } = objectProp;
 
 	useEffect(() => {
 		setIsLoading(true);
@@ -37,7 +38,7 @@ const ArtList = ({ navigation }) => {
 				});
 		}
 		getArtWork();
-	}, []);
+	}, [renderComponent]);
 
 	return (
 		<SafeAreaView className="bg-white ">

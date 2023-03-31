@@ -29,7 +29,7 @@ const Login = ({ navigation }) => {
 	};
 
 	return (
-		<SafeAreaView className="w-full h-full">
+		<SafeAreaView className="w-full h-full bg-white">
 			<Text className="mt-10 mb-20 text-3xl text-center">
 				Welcome to <Text className="font-bold text-pink">City Canvas</Text>
 			</Text>
