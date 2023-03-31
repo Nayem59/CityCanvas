@@ -12,12 +12,13 @@ import { FontAwesome } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { AntDesign } from "@expo/vector-icons";
 import * as Location from "expo-location";
-import { doc, setDoc, GeoPoint } from "firebase/firestore";
+import { doc, setDoc, GeoPoint, getDoc } from "firebase/firestore";
 import * as ImagePicker from "expo-image-picker";
 import { db } from "../firebaseConfig";
 import uuid from "react-native-uuid";
 
-const AddArt = ({ navigation, setRenderComponent, renderComponent }) => {
+const AddArt = ({ navigation, setRenderComponent, renderComponent, uid }) => {
+	const [username, setUserName] = useState("");
 	const [image, setImage] = useState("");
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
@@ -26,6 +27,15 @@ const AddArt = ({ navigation, setRenderComponent, renderComponent }) => {
 	const [tags, setTags] = useState([]);
 	const [artist, setArtist] = useState("");
 	const [rerender, setRerender] = useState(false);
+
+	useEffect(() => {
+		const docRef = doc(db, "users", uid);
+		getDoc(docRef).then((data) => {
+			const user = data.data().username;
+			setUserName(user);
+		});
+		getPermissionsAndLocation();
+	}, [rerender, uid]);
 
 	const handleSubmit = () => {
 		const object = {
@@ -37,7 +47,7 @@ const AddArt = ({ navigation, setRenderComponent, renderComponent }) => {
 			...location,
 			likes_count: 0,
 			artist,
-			// username
+			username,
 		};
 		const docRef = doc(db, "art", uuid.v4());
 		setDoc(docRef, object).then(() => {
@@ -93,27 +103,23 @@ const AddArt = ({ navigation, setRenderComponent, renderComponent }) => {
 		setLocation(locationData);
 	};
 
-	useEffect(() => {
-		getPermissionsAndLocation();
-	}, [rerender]);
+	const onChange = ({ type }, selectedDate) => {
+		if (type == "set") {
+			const currentDate = selectedDate;
+			setDate(currentDate);
+		}
+	};
 
-  const onChange = ({ type }, selectedDate) => {
-    if (type == "set") {
-      const currentDate = selectedDate;
-      setDate(currentDate);
-    }
-  };
-
-  const streetArtTypes = [
-    { key: "1", value: "Graffiti" },
-    { key: "2", value: "Stencil Art" },
-    { key: "3", value: "Mural Art" },
-    { key: "4", value: "Sticker Art" },
-    { key: "5", value: "Yarn Bombing" },
-    { key: "6", value: "Paste Up Art" },
-    { key: "7", value: "Installation Art" },
-    { key: "8", value: "Reverse Graffiti" },
-  ];
+	const streetArtTypes = [
+		{ key: "1", value: "Graffiti" },
+		{ key: "2", value: "Stencil Art" },
+		{ key: "3", value: "Mural Art" },
+		{ key: "4", value: "Sticker Art" },
+		{ key: "5", value: "Yarn Bombing" },
+		{ key: "6", value: "Paste Up Art" },
+		{ key: "7", value: "Installation Art" },
+		{ key: "8", value: "Reverse Graffiti" },
+	];
 
 	return (
 		<SafeAreaView className="items-center w-full h-full bg-white">

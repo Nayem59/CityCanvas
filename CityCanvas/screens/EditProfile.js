@@ -27,7 +27,7 @@ const EditProfile = ({ navigation, user, uid, setProfileChange }) => {
 	};
 
 	return (
-		<View>
+		<View className="bg-white w-100 h-100">
 			<Formik
 				initialValues={{
 					firstName: "",
