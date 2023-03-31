@@ -1,5 +1,5 @@
-import MapView, { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps';
-import React, { useState } from 'react';
+import MapView, { Marker, Callout, PROVIDER_GOOGLE } from "react-native-maps";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   Alert,
@@ -7,20 +7,21 @@ import {
   Text,
   Image,
   ActivityIndicator,
-} from 'react-native';
-import uuid from 'react-native-uuid';
-import { FontAwesome } from '@expo/vector-icons';
-import { useEffect } from 'react';
-import * as Location from 'expo-location';
-import { db } from '../firebaseConfig';
-import { collection, getDocs } from 'firebase/firestore';
-import { AntDesign } from '@expo/vector-icons';
-import { EvilIcons } from '@expo/vector-icons';
+} from "react-native";
+import uuid from "react-native-uuid";
+import { FontAwesome } from "@expo/vector-icons";
+import { useEffect } from "react";
+import * as Location from "expo-location";
+import { db } from "../firebaseConfig";
+import { collection, getDocs } from "firebase/firestore";
+import { AntDesign } from "@expo/vector-icons";
+import { EvilIcons } from "@expo/vector-icons";
 
 const ArtMap = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [artLocationList, setArtLocationList] = useState([]);
+  const [selectedMarkerPoint, setSelectedMarkerPoint] = useState(null);
 
   const Bristol = {
     latitude: 51.454514,
@@ -31,7 +32,7 @@ const ArtMap = () => {
   useEffect(() => {
     function getArtWork() {
       setIsLoading(true);
-      const artCol = collection(db, 'art');
+      const artCol = collection(db, "art");
       getDocs(artCol).then((snapshot) => {
         const artList = snapshot.docs.map((doc) => doc.data());
         setArtLocationList(artList);
@@ -41,8 +42,8 @@ const ArtMap = () => {
     getArtWork();
     const getPermissions = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('Please grant location permissions');
+      if (status !== "granted") {
+        Alert.alert("Please grant location permissions");
         return;
       }
     };
@@ -54,9 +55,24 @@ const ArtMap = () => {
     const { title, image, address_postcode, address_street, likes_count } =
       location;
     const id = uuid.v4();
+
     return (
-      <Marker coordinate={{ latitude, longitude }} key={id}>
-        <FontAwesome name="map-marker" size={40} color="#C13584" />
+      <Marker
+        coordinate={{ latitude, longitude }}
+        key={id}
+        onPress={() => {
+          setSelectedMarkerPoint(location.location_geopoint);
+        }}
+      >
+        <FontAwesome
+          name="map-marker"
+          size={40}
+          color={
+            selectedMarkerPoint === location.location_geopoint
+              ? "#E5B5D0"
+              : "#C13584"
+          }
+        />
         <Callout className="w-64 h-64 p-0 rounded-xl">
           <View className="flex flex-col m-0 mb-2 w-44 h-2/3">
             <Text className="w-64 h-full mt-1 ">
@@ -68,7 +84,7 @@ const ArtMap = () => {
             </Text>
             <View className="flex flex-col mt-1 gap-1-2">
               <Text className="w-full font-bold text-pink">
-                {title ? title : 'Untitled'}
+                {title ? title : "Untitled"}
               </Text>
               <View className="flex flex-row items-center gap-1 p-1">
                 <AntDesign name="heart" size={20} color="gray" />

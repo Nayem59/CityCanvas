@@ -12,17 +12,17 @@ const StreetArtInfo = ({ route, navigation }) => {
 	const [isLoading, setIsLoading] = useState(true);
 	const { id } = route.params;
 
-	useEffect(() => {
-		const testFunc = (id) => {
-			setIsLoading(true);
-			let docRef = doc(db, "art", id);
-			return getDoc(docRef).then((data) => {
-				setArtInfo(data.data());
-				setIsLoading(false);
-			});
-		};
-		testFunc(id);
-	}, [id]);
+  useEffect(() => {
+    const testFunc = (id) => {
+      setIsLoading(true);
+      let docRef = doc(db, "art", id);
+      return getDoc(docRef).then((data) => {
+        setArtInfo(data.data());
+        setIsLoading(false);
+      });
+    };
+    testFunc(id);
+  }, [id]);
 
 	return (
 		<SafeAreaView className="absolute w-full h-full bg-white">
