@@ -4,20 +4,56 @@ import {
 	SafeAreaView,
 	TextInput,
 	TouchableOpacity,
+	Alert,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
 import { FontAwesome } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { AntDesign } from "@expo/vector-icons";
 import * as Location from "expo-location";
+import { doc, setDoc, GeoPoint } from "firebase/firestore";
 import * as ImagePicker from "expo-image-picker";
+import { db } from "../firebaseConfig";
+import uuid from "react-native-uuid";
 
-const AddArt = () => {
-	const [selectedTags, setSelectedTags] = useState([]);
-	const [userLocation, setUserLocation] = useState("");
-	const [image, setImage] = useState(null);
+const AddArt = ({ navigation, setRenderComponent, renderComponent }) => {
+	const [image, setImage] = useState("");
+	const [title, setTitle] = useState("");
+	const [description, setDescription] = useState("");
+	const [location, setLocation] = useState({});
+	const [date, setDate] = useState(new Date());
+	const [tags, setTags] = useState([]);
+	const [artist, setArtist] = useState("");
+	const [rerender, setRerender] = useState(false);
 
+	const handleSubmit = () => {
+		const object = {
+			image,
+			title,
+			description,
+			date_created: date,
+			tags,
+			...location,
+			likes_count: 0,
+			artist,
+			// username
+		};
+		const docRef = doc(db, "art", uuid.v4());
+		setDoc(docRef, object).then(() => {
+			Alert.alert("Comment posted successfully");
+			setImage("");
+			setTitle("");
+			setDescription("");
+			setLocation({});
+			setDate(new Date());
+			setArtist("");
+			setTags([]);
+			setRerender(!rerender);
+			setRenderComponent(!renderComponent);
+			navigation.navigate("Home");
+		});
+	};
 	const pickImage = async () => {
 		// No permissions request is necessary for launching the image library
 		let result = await ImagePicker.launchImageLibraryAsync({
@@ -26,7 +62,6 @@ const AddArt = () => {
 			aspect: [4, 3],
 			quality: 1,
 		});
-
 		if (!result.canceled) {
 			setImage(result.assets[0].uri);
 		}
@@ -43,12 +78,24 @@ const AddArt = () => {
 			longitude: currentLocation.coords.longitude,
 			latitude: currentLocation.coords.latitude,
 		});
-		const { city, postalCode } = reversedLocation[0];
-		const location = `${city}, ${postalCode}`;
-		setUserLocation(location);
+		const { city, postalCode, streetNumber, street } = reversedLocation[0];
+
+		const locationData = {
+			address_city: city,
+			address_postcode: postalCode,
+			address_building_number: streetNumber,
+			address_street: street,
+			location_geopoint: new GeoPoint(
+				currentLocation.coords.latitude,
+				currentLocation.coords.longitude
+			),
+		};
+		setLocation(locationData);
 	};
 
-	const [date, setDate] = useState(new Date());
+	useEffect(() => {
+		getPermissionsAndLocation();
+	}, [rerender]);
 
 	const onChange = ({ type }, selectedDate) => {
 		if (type == "set") {
@@ -73,14 +120,15 @@ const AddArt = () => {
 			<Text className="mt-10 mb-10 text-3xl text-center">
 				Upload <Text className="font-bold text-pink">Street Art</Text>
 			</Text>
+
 			<View className="w-10/12">
 				<View className="w-full">
 					<View className="flex flex-row items-center justify-between w-full p-3 py-4 my-2 border rounded-lg border-stone-300 focus:border-pink">
 						<TextInput
-							placeholder={"Upload image"}
+							placeholder="Upload image"
 							autoCapitalize="none"
 							value={image}
-							onChange={(input) => setImage(input)}
+							onChangeText={(input) => setImage(input)}
 						/>
 						<TouchableOpacity className="px-2 border-l border-stone-300">
 							<FontAwesome
@@ -95,16 +143,33 @@ const AddArt = () => {
 				</View>
 				<View className="w-full">
 					<TextInput
+						value={title}
 						placeholder="Title"
 						autoCapitalize="none"
 						className="w-full p-3 py-4 my-2 border rounded-lg border-stone-300 focus:border-pink"
+						onChangeText={(input) => setTitle(input)}
+					/>
+				</View>
+				<View className="w-full">
+					<TextInput
+						value={artist}
+						placeholder="Artist"
+						autoCapitalize="none"
+						className="w-full p-3 py-4 my-2 border rounded-lg border-stone-300 focus:border-pink"
+						onChangeText={(input) => {
+							input ? input : "unknown";
+							setArtist(input);
+						}}
 					/>
 				</View>
 				<View className="w-full">
 					<TextInput
 						placeholder="Description"
 						autoCapitalize="none"
-						className="w-full p-3 pb-32 my-2 border rounded-lg border-stone-300 focus:border-pink"
+						className="w-full p-3 pb-20 my-2 border rounded-lg border-stone-300 focus:border-pink"
+						value={description}
+						onChangeText={(input) => setDescription(input)}
+						maxLength={200}
 					/>
 				</View>
 				<View className="w-full ">
@@ -112,8 +177,8 @@ const AddArt = () => {
 						<TextInput
 							placeholder="Location"
 							autoCapitalize="none"
-							value={userLocation}
-							onChange={(input) => setUserLocation(input)}
+							value={`${location.address_city} ${location.address_postcode}`}
+							onChangeText={(input) => setLocation(input)}
 						/>
 						<TouchableOpacity
 							className="px-2 border-l border-stone-300"
@@ -136,13 +201,13 @@ const AddArt = () => {
 						value={date}
 						textColor="black"
 						accentColor={"#c13584"}
-						onChange={onChange}
+						onChangeText={() => onChange()}
 						placeholderTextColor="#d6d3d1"
 					/>
 				</View>
 				<View className="mt-2">
 					<MultipleSelectList
-						setSelected={(val) => setSelectedTags(val)}
+						setSelected={(input) => setTags(input)}
 						data={streetArtTypes}
 						label="Tags"
 						save="value"
@@ -157,11 +222,14 @@ const AddArt = () => {
 						maxHeight={150}
 						boxStyles={{ borderColor: "#d6d3d1" }}
 						labelStyles={{ color: "#d6d3d1" }}
-						defaultOption={"Graffiti"}
+						defaultOption={{ key: "1", value: "Graffiti" }}
 					/>
 				</View>
-				<View className="flex items-end justify-end h-32">
-					<TouchableOpacity className="flex flex-row items-center justify-center w-full p-3 py-4 my-2 rounded-lg bg-pink border-stone-300">
+				<View className="flex items-end justify-end h-20">
+					<TouchableOpacity
+						className="flex flex-row items-center justify-center w-full p-3 py-4 my-2 rounded-lg bg-pink border-stone-300"
+						onPress={handleSubmit}
+					>
 						<AntDesign name={"mail"} size={20} color="white" />
 						<Text className="ml-4 font-bold text-white uppercase text-md">
 							POST
