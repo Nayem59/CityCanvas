@@ -1,37 +1,41 @@
-import MapView, { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps';
-import React, { useState } from 'react';
+import MapView, { Marker, Callout, PROVIDER_GOOGLE } from "react-native-maps";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   Alert,
   View,
   Text,
   Image,
+  Linking,
   ActivityIndicator,
-} from 'react-native';
-import uuid from 'react-native-uuid';
-import { FontAwesome } from '@expo/vector-icons';
-import { useEffect } from 'react';
-import * as Location from 'expo-location';
-import { db } from '../firebaseConfig';
-import { collection, getDocs } from 'firebase/firestore';
-import { AntDesign } from '@expo/vector-icons';
-import { EvilIcons } from '@expo/vector-icons';
+} from "react-native";
+import uuid from "react-native-uuid";
+import { FontAwesome } from "@expo/vector-icons";
+import { useEffect } from "react";
+import * as Location from "expo-location";
+import { db } from "../firebaseConfig";
+import { collection, getDocs } from "firebase/firestore";
+import { AntDesign } from "@expo/vector-icons";
+import { EvilIcons } from "@expo/vector-icons";
+import GetDirection from "../components/GetDirection";
 
-const ArtMap = () => {
+const ArtMap = ({ locationBristol }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [artLocationList, setArtLocationList] = useState([]);
+  const [selectedMarkerPoint, setSelectedMarkerPoint] = useState(null);
 
-  const Bristol = {
-    latitude: 51.454514,
-    longitude: -2.5879,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  };
+  // const Bristol = {
+  //   latitude: 51.454514,
+  //   longitude: -2.5879,
+  //   latitudeDelta: 0.0922,
+  //   longitudeDelta: 0.0421,
+  // };
+  
   useEffect(() => {
     function getArtWork() {
       setIsLoading(true);
-      const artCol = collection(db, 'art');
+      const artCol = collection(db, "art");
       getDocs(artCol).then((snapshot) => {
         const artList = snapshot.docs.map((doc) => doc.data());
         setArtLocationList(artList);
@@ -41,8 +45,8 @@ const ArtMap = () => {
     getArtWork();
     const getPermissions = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('Please grant location permissions');
+      if (status !== "granted") {
+        Alert.alert("Please grant location permissions");
         return;
       }
     };
@@ -50,13 +54,37 @@ const ArtMap = () => {
   }, []);
 
   const markers = artLocationList.map((location) => {
+    if (!location.location_geopoint) {
+      location.location_geopoint = {
+        latitude: 0,
+        longitude: 0,
+      };
+    }
     const { latitude, longitude } = location.location_geopoint;
     const { title, image, address_postcode, address_street, likes_count } =
       location;
     const id = uuid.v4();
+
+    const myLocation = `${locationBristol.latitude}, ${locationBristol.longitude}`;
+    const latLng = `${latitude},${longitude}`;
+
     return (
-      <Marker coordinate={{ latitude, longitude }} key={id}>
-        <FontAwesome name="map-marker" size={40} color="#C13584" />
+      <Marker
+        coordinate={{ latitude, longitude }}
+        key={id + Date.now()}
+        onPress={() => {
+          setSelectedMarkerPoint(location.location_geopoint);
+        }}
+      >
+        <FontAwesome
+          name="map-marker"
+          size={40}
+          color={
+            selectedMarkerPoint === location.location_geopoint
+              ? "#FC4E4E"
+              : "#C13584"
+          }
+        />
         <Callout className="w-64 h-64 p-0 rounded-xl">
           <View className="flex flex-col m-0 mb-2 w-44 h-2/3">
             <Text className="w-64 h-full mt-1 ">
@@ -68,7 +96,7 @@ const ArtMap = () => {
             </Text>
             <View className="flex flex-col mt-1 gap-1-2">
               <Text className="w-full font-bold text-pink">
-                {title ? title : 'Untitled'}
+                {title ? title : "Untitled"}
               </Text>
               <View className="flex flex-row items-center gap-1 p-1">
                 <AntDesign name="heart" size={20} color="gray" />
@@ -79,7 +107,7 @@ const ArtMap = () => {
                 <Text className="w-full">
                   {address_postcode}, {address_street}
                 </Text>
-                <EvilIcons name="external-link" size={28} color="#C13584" />
+                <GetDirection from={myLocation} to={latLng} />
               </View>
             </View>
           </View>
@@ -98,7 +126,7 @@ const ArtMap = () => {
       ) : (
         <MapView
           className="flex flex-1"
-          initialRegion={Bristol}
+          initialRegion={locationBristol}
           zoomEnabled={true}
           // provider={PROVIDER_GOOGLE}
           showsUserLocation={true}

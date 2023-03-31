@@ -5,7 +5,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 
 const TopTab = createMaterialTopTabNavigator();
 
-const TabNavTop = () => {
+const TabNavTop = ({ locationBristol }) => {
   return (
     <TopTab.Navigator
       screenOptions={{
@@ -14,7 +14,10 @@ const TabNavTop = () => {
         tabBarIndicatorStyle: { backgroundColor: "#C13584" },
       }}
     >
-      <TopTab.Screen name="Map" component={ArtMap} />
+      <TopTab.Screen name="Map">
+        {(props) => <ArtMap {...props} locationBristol={locationBristol} />}
+      </TopTab.Screen>
+
       <TopTab.Screen name="List" component={ArtList} />
     </TopTab.Navigator>
   );
