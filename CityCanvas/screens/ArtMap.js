@@ -1,22 +1,12 @@
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from "react-native-maps";
 import React, { useState } from "react";
 import {
-<<<<<<< HEAD
   SafeAreaView,
   Alert,
   View,
   Text,
   Image,
-  Linking,
   ActivityIndicator,
-=======
-	SafeAreaView,
-	Alert,
-	View,
-	Text,
-	Image,
-	ActivityIndicator,
->>>>>>> main
 } from "react-native";
 import uuid from "react-native-uuid";
 import { FontAwesome } from "@expo/vector-icons";
@@ -25,15 +15,14 @@ import * as Location from "expo-location";
 import { db } from "../firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
 import { AntDesign } from "@expo/vector-icons";
-import { EvilIcons } from "@expo/vector-icons";
 import GetDirection from "../components/GetDirection";
 
 const ArtMap = ({ objectProp, locationBristol }) => {
-	const { renderComponent, setRenderComponent } = objectProp;
-	const [isLoading, setIsLoading] = useState(true);
+  const { renderComponent, setRenderComponent } = objectProp;
+  const [isLoading, setIsLoading] = useState(true);
 
-	const [artLocationList, setArtLocationList] = useState([]);
-	const [selectedMarkerPoint, setSelectedMarkerPoint] = useState(null);
+  const [artLocationList, setArtLocationList] = useState([]);
+  const [selectedMarkerPoint, setSelectedMarkerPoint] = useState(null);
 
   // const Bristol = {
   //   latitude: 51.454514,
