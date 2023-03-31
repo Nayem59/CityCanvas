@@ -1,8 +1,8 @@
-import { SafeAreaView, View, Text } from 'react-native';
-import React from 'react';
-import AppButton from '../components/AppButton';
-import { signOut } from 'firebase/auth';
-import { auth } from '../firebaseConfig';
+import { SafeAreaView, View, Text } from "react-native";
+import React from "react";
+import AppButton from "../components/AppButton";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebaseConfig";
 
 const ProfileInfo = ({ user, navigation }) => {
   const handleUserLogout = () => {
@@ -28,7 +28,7 @@ const ProfileInfo = ({ user, navigation }) => {
           title="Edit profile"
           primary
           icon="edit"
-          handlePress={() => navigation.navigate('EditProfile')}
+          handlePress={() => navigation.navigate("EditProfile")}
         />
         <AppButton
           title="Sign out"

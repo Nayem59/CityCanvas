@@ -1,10 +1,10 @@
-import { Text, SafeAreaView } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { db } from '../firebaseConfig';
-import { doc, getDoc } from 'firebase/firestore';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import EditProfile from './EditProfile';
-import ProfileInfo from './ProfileInfo';
+import { Text, SafeAreaView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { db } from "../firebaseConfig";
+import { doc, getDoc } from "firebase/firestore";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import EditProfile from "./EditProfile";
+import ProfileInfo from "./ProfileInfo";
 const Stack = createNativeStackNavigator();
 
 const Profile = ({ uid, navigation }) => {
@@ -14,7 +14,7 @@ const Profile = ({ uid, navigation }) => {
 
   useEffect(() => {
     setIsLoading(true);
-    const userDoc = doc(db, 'users', uid);
+    const userDoc = doc(db, "users", uid);
     getDoc(userDoc).then((user) => {
       const userData = user.data();
       setUser(userData);

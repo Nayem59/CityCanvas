@@ -5,53 +5,53 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
-} from 'react-native';
-import React from 'react';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth, db } from '../firebaseConfig';
-import { doc, getDoc, writeBatch } from 'firebase/firestore';
-import Input from '../components/Input';
-import AppButton from '../components/AppButton';
-import { AntDesign } from '@expo/vector-icons';
+} from "react-native";
+import React from "react";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../firebaseConfig";
+import { doc, getDoc, writeBatch } from "firebase/firestore";
+import Input from "../components/Input";
+import AppButton from "../components/AppButton";
+import { AntDesign } from "@expo/vector-icons";
 
 const SignupSchema = Yup.object({
   firstName: Yup.string()
-    .min(2, 'Too short')
-    .max(20, 'Too long')
-    .required('Required'),
+    .min(2, "Too short")
+    .max(20, "Too long")
+    .required("Required"),
   lastName: Yup.string()
-    .min(2, 'Too short')
-    .max(30, 'Too long')
-    .required('Required'),
+    .min(2, "Too short")
+    .max(30, "Too long")
+    .required("Required"),
   username: Yup.string()
-    .min(2, 'Too short')
-    .max(20, 'Too long')
-    .required('Required'),
-  email: Yup.string().email('Invalid email').required('Required'),
+    .min(2, "Too short")
+    .max(20, "Too long")
+    .required("Required"),
+  email: Yup.string().email("Invalid email").required("Required"),
   password: Yup.string()
-    .min(8, 'Too short')
-    .max(20, 'Too long')
-    .required('Required')
+    .min(8, "Too short")
+    .max(20, "Too long")
+    .required("Required")
     .matches(
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-      'Must include at least one letter, one number and one special character'
+      "Must include at least one letter, one number and one special character"
     ),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref('password'), null], 'Passwords must match')
-    .required('Required'),
+    .oneOf([Yup.ref("password"), null], "Passwords must match")
+    .required("Required"),
 });
 
 const SignUp = ({ navigation }) => {
   const register = (firstName, lastName, username, email, password) => {
     const batch = writeBatch(db);
     const userData = { firstName, lastName, username, email };
-    const docRef = doc(db, 'usernames', username);
+    const docRef = doc(db, "usernames", username);
 
     getDoc(docRef).then((snapShot) => {
       if (snapShot.exists()) {
-        Alert.alert('username already exists');
+        Alert.alert("username already exists");
       } else {
         createUserWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
@@ -59,15 +59,15 @@ const SignUp = ({ navigation }) => {
             return uid;
           })
           .then((uid) => {
-            const writeUsers = doc(db, 'users', uid);
-            const writeUsernames = doc(db, 'usernames', userData.username);
+            const writeUsers = doc(db, "users", uid);
+            const writeUsernames = doc(db, "usernames", userData.username);
 
             batch.set(writeUsers, userData);
             batch.set(writeUsernames, { uid });
             batch.commit();
           })
           .catch((error) => {
-            Alert.alert('email already exists');
+            Alert.alert("email already exists");
           });
       }
     });
@@ -77,12 +77,12 @@ const SignUp = ({ navigation }) => {
     <SafeAreaView>
       <Formik
         initialValues={{
-          firstName: '',
-          lastName: '',
-          username: '',
-          email: '',
-          password: '',
-          confirmPassword: '',
+          firstName: "",
+          lastName: "",
+          username: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
         }}
         validationSchema={SignupSchema}
         onSubmit={({ firstName, lastName, username, email, password }) => {
@@ -106,8 +106,8 @@ const SignUp = ({ navigation }) => {
               <TextInput
                 placeholder="First name"
                 value={values.firstName}
-                onChangeText={handleChange('firstName')}
-                onBlur={handleBlur('firstName')}
+                onChangeText={handleChange("firstName")}
+                onBlur={handleBlur("firstName")}
                 autoCapitalize="none"
                 autoCorrect={false}
                 className="w-full p-3 py-4 my-2 border rounded-lg border-stone-300 focus:border-pink"
@@ -124,8 +124,8 @@ const SignUp = ({ navigation }) => {
               <TextInput
                 placeholder="Last name"
                 value={values.lastName}
-                onChangeText={handleChange('lastName')}
-                onBlur={handleBlur('lastName')}
+                onChangeText={handleChange("lastName")}
+                onBlur={handleBlur("lastName")}
                 autoCapitalize="none"
                 className="w-full p-3 py-4 my-2 border rounded-lg border-stone-300 focus:border-pink"
               />
@@ -141,8 +141,8 @@ const SignUp = ({ navigation }) => {
               <TextInput
                 placeholder="Username"
                 value={values.username}
-                onChangeText={handleChange('username')}
-                onBlur={handleBlur('username')}
+                onChangeText={handleChange("username")}
+                onBlur={handleBlur("username")}
                 autoCapitalize="none"
                 className="w-full p-3 py-4 my-2 border rounded-lg border-stone-300 focus:border-pink"
               />
@@ -157,8 +157,8 @@ const SignUp = ({ navigation }) => {
               <TextInput
                 placeholder="email"
                 value={values.email}
-                onChangeText={handleChange('email')}
-                onBlur={handleBlur('email')}
+                onChangeText={handleChange("email")}
+                onBlur={handleBlur("email")}
                 autoCapitalize="none"
                 className="w-full p-3 py-4 my-2 border rounded-lg border-stone-300 focus:border-pink"
               />
@@ -173,8 +173,8 @@ const SignUp = ({ navigation }) => {
               <TextInput
                 placeholder="password"
                 value={values.password}
-                onChangeText={handleChange('password')}
-                onBlur={handleBlur('password')}
+                onChangeText={handleChange("password")}
+                onBlur={handleBlur("password")}
                 autoCapitalize="none"
                 secureTextEntry
                 className="w-full p-3 py-4 my-2 border rounded-lg border-stone-300 focus:border-pink"
@@ -190,8 +190,8 @@ const SignUp = ({ navigation }) => {
               <TextInput
                 placeholder="confirm password"
                 value={values.confirmPassword}
-                onChangeText={handleChange('confirmPassword')}
-                onBlur={handleBlur('confirmPassword')}
+                onChangeText={handleChange("confirmPassword")}
+                onBlur={handleBlur("confirmPassword")}
                 autoCapitalize="none"
                 secureTextEntry
                 className="w-full p-3 py-4 my-2 border rounded-lg border-stone-300 focus:border-pink"
@@ -209,7 +209,7 @@ const SignUp = ({ navigation }) => {
               handlePress={handleSubmit}
               title="Sign Up"
               primary={true}
-              icon={'adduser'}
+              icon={"adduser"}
             />
             <View className="w-100">
               <Text className="mt-10 mb-2 text-stone-500">
@@ -217,10 +217,10 @@ const SignUp = ({ navigation }) => {
               </Text>
             </View>
             <AppButton
-              handlePress={() => navigation.navigate('Login')}
+              handlePress={() => navigation.navigate("Login")}
               title="Back to sign in"
               primary={false}
-              icon={'arrowleft'}
+              icon={"arrowleft"}
             />
           </View>
         )}

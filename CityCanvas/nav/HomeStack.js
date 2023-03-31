@@ -1,24 +1,24 @@
-import React from 'react';
-import AddArt from '../screens/AddArt';
-import Profile from '../screens/Profile';
-import Home from '../screens/Home';
+import React from "react";
+import AddArt from "../screens/AddArt";
+import Profile from "../screens/Profile";
+import Home from "../screens/Home";
 
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
 
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const Tab = createBottomTabNavigator();
 
 const HomeStack = ({ uid }) => {
   return (
     <Tab.Navigator
-      screenOptions={{ headerShown: false, tabBarActiveTintColor: '#C13584' }}
+      screenOptions={{ headerShown: false, tabBarActiveTintColor: "#C13584" }}
     >
       <Tab.Screen
         name="Home"
         component={Home}
         options={{
-          tabBarLabel: 'Home',
+          tabBarLabel: "Home",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="md-home" size={size} color={color} />
           ),
@@ -28,7 +28,7 @@ const HomeStack = ({ uid }) => {
         name="AddArt"
         component={AddArt}
         options={{
-          tabBarLabel: 'Add Art',
+          tabBarLabel: "Add Art",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="md-add-circle" size={size} color={color} />
           ),
@@ -38,7 +38,7 @@ const HomeStack = ({ uid }) => {
         name="Profile"
         // component={Profile}
         options={{
-          tabBarLabel: 'Profile',
+          tabBarLabel: "Profile",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="md-person" size={size} color={color} />
           ),

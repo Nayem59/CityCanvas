@@ -1,26 +1,26 @@
-import { View, Text, TextInput } from 'react-native';
-import React from 'react';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
-import AppButton from '../components/AppButton';
-import { AntDesign } from '@expo/vector-icons';
-import { doc, updateDoc } from 'firebase/firestore';
-import { db, auth } from '../firebaseConfig';
+import { View, Text, TextInput } from "react-native";
+import React from "react";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import AppButton from "../components/AppButton";
+import { AntDesign } from "@expo/vector-icons";
+import { doc, updateDoc } from "firebase/firestore";
+import { db, auth } from "../firebaseConfig";
 
 const EditProfileSchema = Yup.object({
   firstName: Yup.string()
-    .min(2, 'Too short')
-    .max(20, 'Too long')
-    .required('Required'),
+    .min(2, "Too short")
+    .max(20, "Too long")
+    .required("Required"),
   lastName: Yup.string()
-    .min(2, 'Too short')
-    .max(30, 'Too long')
-    .required('Required'),
+    .min(2, "Too short")
+    .max(30, "Too long")
+    .required("Required"),
 });
 
 const EditProfile = ({ navigation, user, uid, setProfileChange }) => {
   const editUserProfile = (firstName, lastName) => {
-    const docRef = doc(db, 'users', uid);
+    const docRef = doc(db, "users", uid);
     updateDoc(docRef, { firstName, lastName }).then(() => {
       setProfileChange(true);
     });
@@ -30,8 +30,8 @@ const EditProfile = ({ navigation, user, uid, setProfileChange }) => {
     <View>
       <Formik
         initialValues={{
-          firstName: '',
-          lastName: '',
+          firstName: "",
+          lastName: "",
         }}
         validationSchema={EditProfileSchema}
         onSubmit={({ firstName, lastName }) => {
@@ -54,8 +54,8 @@ const EditProfile = ({ navigation, user, uid, setProfileChange }) => {
               <TextInput
                 placeholder={user.firstName}
                 value={values.firstName}
-                onChangeText={handleChange('firstName')}
-                onBlur={handleBlur('firstName')}
+                onChangeText={handleChange("firstName")}
+                onBlur={handleBlur("firstName")}
                 autoCapitalize="none"
                 autoCorrect={false}
                 className="w-full p-3 py-4 my-2 border rounded-lg border-stone-300 focus:border-pink"
@@ -72,8 +72,8 @@ const EditProfile = ({ navigation, user, uid, setProfileChange }) => {
               <TextInput
                 placeholder={user.lastName}
                 value={values.lastName}
-                onChangeText={handleChange('lastName')}
-                onBlur={handleBlur('lastName')}
+                onChangeText={handleChange("lastName")}
+                onBlur={handleBlur("lastName")}
                 autoCapitalize="none"
                 className="w-full p-3 py-4 my-2 border rounded-lg border-stone-300 focus:border-pink"
               />
@@ -88,13 +88,13 @@ const EditProfile = ({ navigation, user, uid, setProfileChange }) => {
               handlePress={handleSubmit}
               title="Edit"
               primary={true}
-              icon={'edit'}
+              icon={"edit"}
             />
             <AppButton
-              handlePress={() => navigation.navigate('ProfileInfo')}
+              handlePress={() => navigation.navigate("ProfileInfo")}
               title="Back to profile"
               primary={false}
-              icon={'arrowleft'}
+              icon={"arrowleft"}
             />
           </View>
         )}

@@ -1,14 +1,14 @@
-import { NavigationContainer } from '@react-navigation/native';
-import HomeStack from './nav/HomeStack';
-import LoginStack from './nav/LoginStack';
-import { useState, useEffect } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './firebaseConfig';
+import { NavigationContainer } from "@react-navigation/native";
+import HomeStack from "./nav/HomeStack";
+import LoginStack from "./nav/LoginStack";
+import { useState, useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebaseConfig";
 
 export default function App() {
   const [initialising, setInitialising] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [uid, setUid] = useState('');
+  const [uid, setUid] = useState("");
 
   useEffect(() => {
     setInitialising(true);
