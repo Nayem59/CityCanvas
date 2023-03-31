@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../firebaseConfig";
 import { doc, getDoc, writeBatch } from "firebase/firestore";
+import Input from "../components/Input";
 import AppButton from "../components/AppButton";
 import { AntDesign } from "@expo/vector-icons";
 

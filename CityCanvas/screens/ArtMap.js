@@ -1,6 +1,7 @@
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from "react-native-maps";
 import React, { useState } from "react";
 import {
+<<<<<<< HEAD
   SafeAreaView,
   Alert,
   View,
@@ -8,6 +9,14 @@ import {
   Image,
   Linking,
   ActivityIndicator,
+=======
+	SafeAreaView,
+	Alert,
+	View,
+	Text,
+	Image,
+	ActivityIndicator,
+>>>>>>> main
 } from "react-native";
 import uuid from "react-native-uuid";
 import { FontAwesome } from "@expo/vector-icons";
@@ -19,11 +28,12 @@ import { AntDesign } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 import GetDirection from "../components/GetDirection";
 
-const ArtMap = ({ locationBristol }) => {
-  const [isLoading, setIsLoading] = useState(true);
+const ArtMap = ({ objectProp, locationBristol }) => {
+	const { renderComponent, setRenderComponent } = objectProp;
+	const [isLoading, setIsLoading] = useState(true);
 
-  const [artLocationList, setArtLocationList] = useState([]);
-  const [selectedMarkerPoint, setSelectedMarkerPoint] = useState(null);
+	const [artLocationList, setArtLocationList] = useState([]);
+	const [selectedMarkerPoint, setSelectedMarkerPoint] = useState(null);
 
   // const Bristol = {
   //   latitude: 51.454514,
