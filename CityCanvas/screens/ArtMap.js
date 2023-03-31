@@ -31,7 +31,7 @@ const ArtMap = ({ locationBristol }) => {
   //   latitudeDelta: 0.0922,
   //   longitudeDelta: 0.0421,
   // };
-  
+
   useEffect(() => {
     function getArtWork() {
       setIsLoading(true);

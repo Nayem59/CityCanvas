@@ -34,10 +34,8 @@ const StreetArtInfo = ({ route, navigation, locationBristol }) => {
           return data;
         })
         .then((data) => {
-          console.log(data.data().location_geopoint);
-          setNewLocal(
-            `${artInfo.location_geopoint.latitude},${artInfo.location_geopoint.longitude}`
-          );
+          const newLatLong = data.data().location_geopoint;
+          setNewLocal(`${newLatLong.latitude},${newLatLong.longitude}`);
         });
     };
     testFunc(id);
