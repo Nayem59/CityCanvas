@@ -5,7 +5,7 @@ import StreetArtInfo from "../screens/StreetArtInfo";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Stack = createNativeStackNavigator();
-const Home = () => {
+const Home = ({ objectProp }) => {
   const Bristol = {
     latitude: 51.454514,
     longitude: -2.5879,
@@ -18,7 +18,11 @@ const Home = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="TabNavTop">
           {(props) => (
-            <TabNavTop {...props} locationBristol={locationBristol} />
+            <TabNavTop
+              {...props}
+              locationBristol={locationBristol}
+              objectProp={objectProp}
+            />
           )}
         </Stack.Screen>
         <Stack.Screen name="StreetArtInfo">

@@ -50,7 +50,7 @@ const ArtMap = ({ objectProp, locationBristol }) => {
       }
     };
     getPermissions();
-  }, []);
+  }, [renderComponent]);
 
   const markers = artLocationList.map((location) => {
     if (!location.location_geopoint) {
