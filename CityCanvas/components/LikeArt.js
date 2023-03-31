@@ -5,7 +5,7 @@ import { db } from "../firebaseConfig";
 import { doc, updateDoc, increment } from "firebase/firestore";
 
 const LikeArt = ({ itemId, item }) => {
-	const [likes, setLikes] = useState(0);
+	const [likes, setLikes] = useState(false);
 	const incLikes = () => {
 		const likesRef = doc(db, "art", itemId);
 		updateDoc(likesRef, { likes_count: increment(1) });
@@ -14,14 +14,16 @@ const LikeArt = ({ itemId, item }) => {
 
 	return (
 		<TouchableOpacity
-			onPress={() => {
-				incLikes();
-				alert("You liked it");
-			}}
+			onPress={() => setLikes(!likes)}
+			className="flex items-end justify-end p-1"
 		>
-			<Text className="absolute bottom-0 right-0 p-1 ">
-				<AntDesign name="heart" size={20} color="#C13584" />{" "}
-				<Text className="font-semibold">{item.likes_count} </Text>
+			<Text>
+				<AntDesign
+					name="heart"
+					size={20}
+					color={likes ? "#ed1a25" : "#a8a29e"}
+				/>{" "}
+				<Text>{item.likes_count} </Text>
 			</Text>
 		</TouchableOpacity>
 	);
