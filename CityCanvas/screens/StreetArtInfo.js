@@ -1,4 +1,11 @@
-import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  Linking,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { db } from "../firebaseConfig";
 import { getDoc, doc } from "firebase/firestore";
@@ -7,23 +14,31 @@ import { Entypo } from "@expo/vector-icons";
 import AppButton from "../components/AppButton";
 import { Ionicons } from "@expo/vector-icons";
 import GetDirection from "../components/GetDirection";
+import { Link } from "@react-navigation/native";
 
 const StreetArtInfo = ({ route, navigation, locationBristol }) => {
   const [artInfo, setArtInfo] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [locals, setLocals] = useState(true);
+  const [newLocal, setNewLocal] = useState("");
   const { id } = route.params;
   const myLocation = `${locationBristol.latitude}, ${locationBristol.longitude}`;
-  const latLng = `${artInfo.location_geopoint.latitude},${artInfo.location_geopoint.longitude}`;
 
   useEffect(() => {
     const testFunc = (id) => {
       setIsLoading(true);
       let docRef = doc(db, "art", id);
-      return getDoc(docRef).then((data) => {
-        setArtInfo(data.data());
-        setIsLoading(false);
-      });
+      return getDoc(docRef)
+        .then((data) => {
+          setArtInfo(data.data());
+          setIsLoading(false);
+          return data;
+        })
+        .then((data) => {
+          console.log(data.data().location_geopoint);
+          setNewLocal(
+            `${artInfo.location_geopoint.latitude},${artInfo.location_geopoint.longitude}`
+          );
+        });
     };
     testFunc(id);
   }, [id]);
@@ -76,30 +91,23 @@ const StreetArtInfo = ({ route, navigation, locationBristol }) => {
                 <Entypo name="location-pin" size={20} color="#C13584" />
                 {artInfo.address_building_number} {artInfo.address_street},{" "}
                 {artInfo.address_city} {artInfo.address_postcode}
-                {/* <GetDirection from={myLocation} to={latLng} /> */}
               </Text>
+              <GetDirection from={myLocation} to={newLocal} />
             </View>
 
-            <View className="mt-3 text-stone-500">
+            {/* <View className="mt-3 text-stone-500">
               <AppButton
                 title={"Comments"}
-                handlePress={() => {
-                  console.log(myLocation);
-                  console.log(latLng);
-                  // <GetDirection from={locationBristol} to={latLng} />;
-                  console.log("Comments Clicked");
-                }}
                 icon={"message1"}
               />
+
               <AppButton
                 title={"Get Direction"}
-                handlePress={() => {
-                  // <GetDirection from={myLocation} to={latLng} />;
-                }}
+                handlePress={() => {}}
                 primary={true}
                 icon={"enviromento"}
               />
-            </View>
+            </View> */}
           </View>
         </View>
       )}
