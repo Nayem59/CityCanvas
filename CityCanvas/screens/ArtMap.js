@@ -69,7 +69,7 @@ const ArtMap = () => {
           size={40}
           color={
             selectedMarkerPoint === location.location_geopoint
-              ? "#000000"
+              ? "#E5B5D0"
               : "#C13584"
           }
         />

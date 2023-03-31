@@ -19,6 +19,8 @@ const LikeArt = ({ itemId, item }) => {
 
   const incLikes = () => {
     const likesRef = doc(db, "art", itemId);
+    setRenderLikesCount((current) => current + 1);
+    setLikes(true);
     updateDoc(likesRef, { likes_count: increment(1) });
     return likesRef;
   };
@@ -38,9 +40,9 @@ const LikeArt = ({ itemId, item }) => {
     >
       <Text>
         <AntDesign
-          name={liked ? "heart" : "hearto"}
+          name={likes ? "heart" : "hearto"}
           size={20}
-          color="#C13584"
+          color={ likes ? "#C13584" : "gray" }
         />{" "}
         <Text className="font-semibold">{renderLikesCount} </Text>
       </Text>
