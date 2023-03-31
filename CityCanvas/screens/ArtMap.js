@@ -19,18 +19,18 @@ import { AntDesign } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 import GetDirection from "../components/GetDirection";
 
-const ArtMap = () => {
+const ArtMap = ({ locationBristol }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [artLocationList, setArtLocationList] = useState([]);
   const [selectedMarkerPoint, setSelectedMarkerPoint] = useState(null);
 
-  const Bristol = {
-    latitude: 51.454514,
-    longitude: -2.5879,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  };
+  // const Bristol = {
+  //   latitude: 51.454514,
+  //   longitude: -2.5879,
+  //   latitudeDelta: 0.0922,
+  //   longitudeDelta: 0.0421,
+  // };
   useEffect(() => {
     function getArtWork() {
       setIsLoading(true);
@@ -64,13 +64,13 @@ const ArtMap = () => {
       location;
     const id = uuid.v4();
 
-    const myLocation = Bristol;
+    const myLocation = `${locationBristol.latitude}, ${locationBristol.longitude}`;
     const latLng = `${latitude},${longitude}`;
 
     return (
       <Marker
         coordinate={{ latitude, longitude }}
-        key={id}
+        key={id + Date.now()}
         onPress={() => {
           setSelectedMarkerPoint(location.location_geopoint);
         }}
@@ -80,7 +80,7 @@ const ArtMap = () => {
           size={40}
           color={
             selectedMarkerPoint === location.location_geopoint
-              ? "#E5B5D0"
+              ? "#FC4E4E"
               : "#C13584"
           }
         />
@@ -125,7 +125,7 @@ const ArtMap = () => {
       ) : (
         <MapView
           className="flex flex-1"
-          initialRegion={Bristol}
+          initialRegion={locationBristol}
           zoomEnabled={true}
           // provider={PROVIDER_GOOGLE}
           showsUserLocation={true}

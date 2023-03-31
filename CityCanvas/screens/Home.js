@@ -1,19 +1,34 @@
 import { View, Text, SafeAreaView } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import TabNavTop from "../nav/TabNavTop";
 import StreetArtInfo from "../screens/StreetArtInfo";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Stack = createNativeStackNavigator();
 const Home = () => {
-	return (
-		<SafeAreaView className="flex flex-1 bg-white">
-			<Stack.Navigator screenOptions={{ headerShown: false }}>
-				<Stack.Screen name="TabNavTop" component={TabNavTop} />
-				<Stack.Screen name="StreetArtInfo" component={StreetArtInfo} />
-			</Stack.Navigator>
-		</SafeAreaView>
-	);
+  const Bristol = {
+    latitude: 51.454514,
+    longitude: -2.5879,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  };
+  const [locationBristol, setLocationBristol] = useState(Bristol);
+  return (
+    <SafeAreaView className="flex flex-1 bg-white">
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="TabNavTop">
+          {(props) => (
+            <TabNavTop {...props} locationBristol={locationBristol} />
+          )}
+        </Stack.Screen>
+        <Stack.Screen name="StreetArtInfo">
+          {(props) => (
+            <StreetArtInfo {...props} locationBristol={locationBristol} />
+          )}
+        </Stack.Screen>
+      </Stack.Navigator>
+    </SafeAreaView>
+  );
 };
 
 export default Home;

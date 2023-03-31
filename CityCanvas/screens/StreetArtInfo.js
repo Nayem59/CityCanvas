@@ -6,11 +6,15 @@ import { SafeAreaView, ActivityIndicator } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import AppButton from "../components/AppButton";
 import { Ionicons } from "@expo/vector-icons";
+import GetDirection from "../components/GetDirection";
 
-const StreetArtInfo = ({ route, navigation }) => {
+const StreetArtInfo = ({ route, navigation, locationBristol }) => {
   const [artInfo, setArtInfo] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [locals, setLocals] = useState(true);
   const { id } = route.params;
+  const myLocation = `${locationBristol.latitude}, ${locationBristol.longitude}`;
+  const latLng = `${artInfo.location_geopoint.latitude},${artInfo.location_geopoint.longitude}`;
 
   useEffect(() => {
     const testFunc = (id) => {
@@ -72,6 +76,7 @@ const StreetArtInfo = ({ route, navigation }) => {
                 <Entypo name="location-pin" size={20} color="#C13584" />
                 {artInfo.address_building_number} {artInfo.address_street},{" "}
                 {artInfo.address_city} {artInfo.address_postcode}
+                {/* <GetDirection from={myLocation} to={latLng} /> */}
               </Text>
             </View>
 
@@ -79,6 +84,9 @@ const StreetArtInfo = ({ route, navigation }) => {
               <AppButton
                 title={"Comments"}
                 handlePress={() => {
+                  console.log(myLocation);
+                  console.log(latLng);
+                  // <GetDirection from={locationBristol} to={latLng} />;
                   console.log("Comments Clicked");
                 }}
                 icon={"message1"}
@@ -86,7 +94,7 @@ const StreetArtInfo = ({ route, navigation }) => {
               <AppButton
                 title={"Get Direction"}
                 handlePress={() => {
-                  console.log("Get Route Clicked");
+                  // <GetDirection from={myLocation} to={latLng} />;
                 }}
                 primary={true}
                 icon={"enviromento"}

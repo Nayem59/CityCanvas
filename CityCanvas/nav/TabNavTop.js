@@ -5,19 +5,22 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 
 const TopTab = createMaterialTopTabNavigator();
 
-const TabNavTop = () => {
-	return (
-		<TopTab.Navigator
-			screenOptions={{
-				tabBarActiveTintColor: "#C13584",
-				tabBarStyle: { backgroundColor: "#ffffff" },
-				tabBarIndicatorStyle: { backgroundColor: "#C13584" },
-			}}
-		>
-			<TopTab.Screen name="Map" component={ArtMap} />
-			<TopTab.Screen name="List" component={ArtList} />
-		</TopTab.Navigator>
-	);
+const TabNavTop = ({ locationBristol }) => {
+  return (
+    <TopTab.Navigator
+      screenOptions={{
+        tabBarActiveTintColor: "#C13584",
+        tabBarStyle: { backgroundColor: "#ffffff" },
+        tabBarIndicatorStyle: { backgroundColor: "#C13584" },
+      }}
+    >
+      <TopTab.Screen name="Map">
+        {(props) => <ArtMap {...props} locationBristol={locationBristol} />}
+      </TopTab.Screen>
+
+      <TopTab.Screen name="List" component={ArtList} />
+    </TopTab.Navigator>
+  );
 };
 
 export default TabNavTop;
