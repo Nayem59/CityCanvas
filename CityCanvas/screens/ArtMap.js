@@ -6,6 +6,7 @@ import {
   View,
   Text,
   Image,
+  Linking,
   ActivityIndicator,
 } from "react-native";
 import uuid from "react-native-uuid";
@@ -16,6 +17,7 @@ import { db } from "../firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
 import { AntDesign } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
+import GetDirection from "../components/GetDirection";
 
 const ArtMap = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -51,10 +53,19 @@ const ArtMap = () => {
   }, []);
 
   const markers = artLocationList.map((location) => {
+    if (!location.location_geopoint) {
+      location.location_geopoint = {
+        latitude: 0,
+        longitude: 0,
+      };
+    }
     const { latitude, longitude } = location.location_geopoint;
     const { title, image, address_postcode, address_street, likes_count } =
       location;
     const id = uuid.v4();
+
+    const myLocation = Bristol;
+    const latLng = `${latitude},${longitude}`;
 
     return (
       <Marker
@@ -95,7 +106,7 @@ const ArtMap = () => {
                 <Text className="w-full">
                   {address_postcode}, {address_street}
                 </Text>
-                <EvilIcons name="external-link" size={28} color="#C13584" />
+                <GetDirection from={myLocation} to={latLng} />
               </View>
             </View>
           </View>
