@@ -15,7 +15,13 @@ const HomeStack = ({ uid }) => {
 
 	return (
 		<Tab.Navigator
-			screenOptions={{ headerShown: false, tabBarActiveTintColor: "#C13584" }}
+			screenOptions={{
+				headerShown: false,
+				tabBarActiveTintColor: "#C13584",
+				tabBarStyle: {
+					height: 100,
+				},
+			}}
 			initialRouteName="Home"
 		>
 			<Tab.Screen

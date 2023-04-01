@@ -65,7 +65,7 @@ const StreetArtInfo = ({ route, navigation, locationBristol }) => {
 							/>
 						</TouchableOpacity>
 						<Image
-							className="flex items-center w-full h-72"
+							className="flex items-center w-full h-60"
 							src={artInfo.image}
 						/>
 					</View>
