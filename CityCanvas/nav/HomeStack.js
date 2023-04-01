@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import TakePhoto from "../screens/TakePhoto";
 
 const Tab = createBottomTabNavigator();
 
@@ -66,6 +67,16 @@ const HomeStack = ({ uid }) => {
 					/>
 				)}
 			</Tab.Screen>
+			<Tab.Screen
+				name="Camera"
+				component={TakePhoto}
+				options={{
+					tabBarLabel: "Take Photo",
+					tabBarIcon: ({ color, size }) => (
+						<Ionicons name="camera-outline" size={size} color={color} />
+					),
+				}}
+			/>
 			<Tab.Screen
 				name="Profile"
 				// component={Profile}
