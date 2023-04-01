@@ -18,7 +18,7 @@ const Input = ({
 				autoCapitalize={autoCapitalize}
 				secureTextEntry={secure}
 				autoCorrect={autoCorrect}
-				className="w-full p-3 py-4 my-2 border rounded-lg border-stone-300 focus:border-pink"
+				className="w-full p-3 py-4 my-2 border rounded-lg rounded-full border-stone-300 focus:border-pink"
 			/>
 		</View>
 	);

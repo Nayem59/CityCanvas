@@ -13,7 +13,6 @@ import { SafeAreaView, ActivityIndicator } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import AppButton from "../components/AppButton";
 import { Ionicons } from "@expo/vector-icons";
-import GetDirection from "../components/GetDirection";
 import { AntDesign } from "@expo/vector-icons";
 
 const StreetArtInfo = ({ route, navigation, locationBristol }) => {
@@ -66,14 +65,14 @@ const StreetArtInfo = ({ route, navigation, locationBristol }) => {
 							/>
 						</TouchableOpacity>
 						<Image
-							className="flex items-center w-full h-72"
+							className="flex items-center w-full h-60"
 							src={artInfo.image}
 						/>
 					</View>
 					<View className="flex w-10/12 mx-auto">
-						<View className=" rounded-3xl">
+						<View>
 							<View className="flex items-center flex-column">
-								<Text className="-mb-2 text-lg font-bold color-pink">
+								<Text className="mb-1 text-lg font-bold color-pink">
 									{artInfo.title ? artInfo.title : "Untitled"}
 								</Text>
 								<Text className="mt-1">
@@ -83,7 +82,7 @@ const StreetArtInfo = ({ route, navigation, locationBristol }) => {
 									{artInfo.date_created.toDate().toDateString()}
 								</Text>
 							</View>
-							<ScrollView className="mb-2 overflow-scroll h-44">
+							<ScrollView className="h-40 mb-2 overflow-scroll">
 								<Text className="text-lg text-justify">
 									{artInfo.description}
 								</Text>
@@ -100,7 +99,7 @@ const StreetArtInfo = ({ route, navigation, locationBristol }) => {
 							<AppButton title={"Comments"} icon={"message1"} />
 
 							<TouchableOpacity
-								className="flex flex-row items-center justify-center w-full p-3 py-4 my-2 rounded-lg bg-pink border-stone-300"
+								className="flex flex-row items-center justify-center w-full p-3 py-4 my-2 rounded-full bg-pink border-stone-300"
 								onPress={() => {
 									Linking.canOpenURL(mapUrl).then((supported) => {
 										if (supported) {

@@ -7,7 +7,7 @@ const AppButton = ({ title, primary, handlePress, icon }) => {
 		<>
 			{primary ? (
 				<TouchableOpacity
-					className="flex flex-row items-center justify-center w-full p-3 py-4 my-2 rounded-lg bg-pink border-stone-300"
+					className="flex flex-row items-center justify-center w-full p-3 py-4 my-2 rounded-full bg-pink border-stone-300 "
 					onPress={handlePress}
 				>
 					<AntDesign name={icon} size={20} color="white" />
@@ -17,13 +17,11 @@ const AppButton = ({ title, primary, handlePress, icon }) => {
 				</TouchableOpacity>
 			) : (
 				<TouchableOpacity
-					className="flex flex-row items-center justify-center w-full p-3 py-4 my-2 border rounded-lg border-pink"
+					className="flex flex-row items-center justify-center w-full p-3 py-4 my-2 border rounded-full border-pink"
 					onPress={handlePress}
 				>
 					<AntDesign name={icon} size={20} color="#C13584" />
-					<Text className="w-1/2 ml-2 text-center uppercase text-md text-pink">
-						{title}
-					</Text>
+					<Text className="ml-2 text-center uppercase text-md">{title}</Text>
 				</TouchableOpacity>
 			)}
 		</>

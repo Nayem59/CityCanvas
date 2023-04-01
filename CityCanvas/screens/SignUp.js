@@ -103,7 +103,7 @@ const SignUp = ({ navigation }) => {
 								onBlur={handleBlur("firstName")}
 								autoCapitalize="none"
 								autoCorrect={false}
-								className="w-full p-3 py-4 my-2 border rounded-lg border-stone-300 focus:border-pink"
+								className="w-full p-3 py-4 my-2 border rounded-lg rounded-full border-stone-300 focus:border-pink"
 							/>
 							{errors.firstName && touched.firstName && (
 								<View className="flex flex-row justify-start ml-2 ">
@@ -120,7 +120,7 @@ const SignUp = ({ navigation }) => {
 								onChangeText={handleChange("lastName")}
 								onBlur={handleBlur("lastName")}
 								autoCapitalize="none"
-								className="w-full p-3 py-4 my-2 border rounded-lg border-stone-300 focus:border-pink"
+								className="w-full p-3 py-4 my-2 border rounded-lg rounded-full border-stone-300 focus:border-pink"
 							/>
 							{errors.lastName && touched.lastName && (
 								<View className="flex flex-row justify-start ml-2 ">
@@ -137,7 +137,7 @@ const SignUp = ({ navigation }) => {
 								onChangeText={handleChange("username")}
 								onBlur={handleBlur("username")}
 								autoCapitalize="none"
-								className="w-full p-3 py-4 my-2 border rounded-lg border-stone-300 focus:border-pink"
+								className="w-full p-3 py-4 my-2 border rounded-lg rounded-full border-stone-300 focus:border-pink"
 							/>
 							{errors.username && touched.username && (
 								<View className="flex flex-row justify-start ml-2 ">
@@ -153,7 +153,7 @@ const SignUp = ({ navigation }) => {
 								onChangeText={handleChange("email")}
 								onBlur={handleBlur("email")}
 								autoCapitalize="none"
-								className="w-full p-3 py-4 my-2 border rounded-lg border-stone-300 focus:border-pink"
+								className="w-full p-3 py-4 my-2 border rounded-lg rounded-full border-stone-300 focus:border-pink"
 							/>
 							{errors.email && touched.email && (
 								<View className="flex flex-row justify-start ml-2 ">
@@ -170,7 +170,7 @@ const SignUp = ({ navigation }) => {
 								onBlur={handleBlur("password")}
 								autoCapitalize="none"
 								secureTextEntry
-								className="w-full p-3 py-4 my-2 border rounded-lg border-stone-300 focus:border-pink"
+								className="w-full p-3 py-4 my-2 border rounded-lg rounded-full border-stone-300 focus:border-pink"
 							/>
 							{errors.password && touched.password && (
 								<View className="flex flex-row justify-start ml-2 ">
@@ -187,7 +187,7 @@ const SignUp = ({ navigation }) => {
 								onBlur={handleBlur("confirmPassword")}
 								autoCapitalize="none"
 								secureTextEntry
-								className="w-full p-3 py-4 my-2 border rounded-lg border-stone-300 focus:border-pink"
+								className="w-full p-3 py-4 my-2 border rounded-lg rounded-full border-stone-300 focus:border-pink"
 							/>
 							{errors.confirmPassword && touched.confirmPassword && (
 								<View className="flex flex-row justify-start ml-2 ">
