@@ -62,8 +62,9 @@ const ArtMap = ({ objectProp, locationBristol }) => {
 
 		return (
 			<Marker
+				tracksViewChanges={false}
 				coordinate={{ latitude, longitude }}
-				key={id + Date.now()}
+				key={id}
 				onPress={() => {
 					setSelectedMarkerPoint(location.location_geopoint);
 				}}
@@ -73,7 +74,7 @@ const ArtMap = ({ objectProp, locationBristol }) => {
 					size={40}
 					color={
 						selectedMarkerPoint === location.location_geopoint
-							? "#FC4E4E"
+							? "#D00404"
 							: "#C13584"
 					}
 				/>

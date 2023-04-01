@@ -22,8 +22,12 @@ const HomeStack = ({ uid }) => {
 				name="Home"
 				options={{
 					tabBarLabel: "Home",
-					tabBarIcon: ({ color, size }) => (
-						<Ionicons name="md-home" size={size} color={color} />
+					tabBarIcon: ({ focused }) => (
+						<Ionicons
+							name={focused ? "md-home" : "home-outline"}
+							size={34}
+							color={focused ? "#C13584" : "#BDBABA"}
+						/>
 					),
 				}}
 			>
@@ -38,8 +42,12 @@ const HomeStack = ({ uid }) => {
 				name="AddArt"
 				options={{
 					tabBarLabel: "Add Art",
-					tabBarIcon: ({ color, size }) => (
-						<Ionicons name="md-add-circle" size={size} color={color} />
+					tabBarIcon: ({ focused, color, size }) => (
+						<Ionicons
+							name={focused ? "add-circle" : "add-circle-outline"}
+							size={34}
+							color={focused ? "#C13584" : "#BDBABA"}
+						/>
 					),
 				}}
 			>
@@ -57,8 +65,12 @@ const HomeStack = ({ uid }) => {
 				// component={Profile}
 				options={{
 					tabBarLabel: "Profile",
-					tabBarIcon: ({ color, size }) => (
-						<Ionicons name="md-person" size={size} color={color} />
+					tabBarIcon: ({ focused }) => (
+						<Ionicons
+							name={focused ? "person-circle" : "person-circle-outline"}
+							size={34}
+							color={focused ? "#C13584" : "#BDBABA"}
+						/>
 					),
 				}}
 			>

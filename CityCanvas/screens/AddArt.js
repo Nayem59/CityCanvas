@@ -5,6 +5,7 @@ import {
 	TextInput,
 	TouchableOpacity,
 	Alert,
+	Pressable,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
@@ -16,6 +17,7 @@ import { doc, setDoc, GeoPoint, getDoc } from "firebase/firestore";
 import * as ImagePicker from "expo-image-picker";
 import { db } from "../firebaseConfig";
 import uuid from "react-native-uuid";
+import Modal from "react-native-modal";
 
 const AddArt = ({ navigation, setRenderComponent, renderComponent, uid }) => {
 	const [username, setUserName] = useState("");
@@ -27,6 +29,8 @@ const AddArt = ({ navigation, setRenderComponent, renderComponent, uid }) => {
 	const [tags, setTags] = useState([]);
 	const [artist, setArtist] = useState("");
 	const [rerender, setRerender] = useState(false);
+
+	const [isModalVisible, setModalVisible] = useState(false);
 
 	useEffect(() => {
 		const docRef = doc(db, "users", uid);
@@ -51,7 +55,6 @@ const AddArt = ({ navigation, setRenderComponent, renderComponent, uid }) => {
 		};
 		const docRef = doc(db, "art", uuid.v4());
 		setDoc(docRef, object).then(() => {
-			Alert.alert("Comment posted successfully");
 			setImage("");
 			setTitle("");
 			setDescription("");
@@ -60,8 +63,8 @@ const AddArt = ({ navigation, setRenderComponent, renderComponent, uid }) => {
 			setArtist("");
 			setTags([]);
 			setRerender(!rerender);
+			setModalVisible(true);
 			setRenderComponent(!renderComponent);
-			navigation.navigate("Home");
 		});
 	};
 	const pickImage = async () => {
@@ -123,13 +126,38 @@ const AddArt = ({ navigation, setRenderComponent, renderComponent, uid }) => {
 
 	return (
 		<SafeAreaView className="items-center w-full h-full bg-white">
+			<Modal
+				isVisible={isModalVisible}
+				animationType="slide"
+				animationInTiming={300}
+			>
+				<View className="flex items-center justify-center">
+					<View className="flex items-center justify-between h-48 p-4 bg-white w-60 gap-y-2 rounded-2xl">
+						<Text className="w-full text-xl text-center text-stone-400">
+							Posted Successfully!
+						</Text>
+						<AntDesign name="checkcircle" size={50} color="#1DB954" />
+						<Pressable
+							onPress={() => {
+								navigation.navigate("Home");
+								setModalVisible(false);
+							}}
+							className="w-full border-t border-stone-200"
+						>
+							<Text className="mt-2 text-lg font-bold text-center">
+								Back to Home
+							</Text>
+						</Pressable>
+					</View>
+				</View>
+			</Modal>
 			<Text className="mt-10 mb-10 text-3xl text-center">
 				Upload <Text className="font-bold text-pink">Street Art</Text>
 			</Text>
 
 			<View className="w-10/12">
 				<View className="w-full">
-					<View className="flex flex-row items-center justify-between w-full p-3 py-4 my-2 border rounded-lg border-stone-300 focus:border-pink">
+					<View className="flex flex-row items-center justify-between w-full p-3 py-4 my-2 border rounded-full border-stone-300 focus:border-pink">
 						<TextInput
 							placeholder="Upload image"
 							autoCapitalize="none"
@@ -152,7 +180,7 @@ const AddArt = ({ navigation, setRenderComponent, renderComponent, uid }) => {
 						value={title}
 						placeholder="Title"
 						autoCapitalize="none"
-						className="w-full p-3 py-4 my-2 border rounded-lg border-stone-300 focus:border-pink"
+						className="w-full p-3 py-4 my-2 border rounded-full border-stone-300 focus:border-pink"
 						onChangeText={(input) => setTitle(input)}
 					/>
 				</View>
@@ -161,7 +189,7 @@ const AddArt = ({ navigation, setRenderComponent, renderComponent, uid }) => {
 						value={artist}
 						placeholder="Artist"
 						autoCapitalize="none"
-						className="w-full p-3 py-4 my-2 border rounded-lg border-stone-300 focus:border-pink"
+						className="w-full p-3 py-4 my-2 border rounded-full border-stone-300 focus:border-pink"
 						onChangeText={(input) => {
 							input ? input : "unknown";
 							setArtist(input);
@@ -172,14 +200,14 @@ const AddArt = ({ navigation, setRenderComponent, renderComponent, uid }) => {
 					<TextInput
 						placeholder="Description"
 						autoCapitalize="none"
-						className="w-full p-3 pb-20 my-2 border rounded-lg border-stone-300 focus:border-pink"
+						className="w-full p-5 pb-20 my-2 border rounded-3xl border-stone-300 focus:border-pink"
 						value={description}
 						onChangeText={(input) => setDescription(input)}
 						maxLength={200}
 					/>
 				</View>
 				<View className="w-full ">
-					<View className="flex flex-row items-center justify-between w-full p-3 py-4 my-2 border rounded-lg border-stone-300 focus:border-pink">
+					<View className="flex flex-row items-center justify-between w-full p-3 py-4 my-2 border rounded-full border-stone-300 focus:border-pink">
 						<TextInput
 							placeholder="Location"
 							autoCapitalize="none"
@@ -200,7 +228,7 @@ const AddArt = ({ navigation, setRenderComponent, renderComponent, uid }) => {
 					</View>
 				</View>
 
-				<View className="flex flex-row justify-between w-full p-3 py-2 my-2 border rounded-lg border-stone-300 focus:border-pink">
+				<View className="flex flex-row justify-between w-full p-3 py-2 my-2 border rounded-full border-stone-300 focus:border-pink">
 					<Text className="mt-2 text-stone-300">Date</Text>
 					<DateTimePicker
 						mode="date"
@@ -226,14 +254,18 @@ const AddArt = ({ navigation, setRenderComponent, renderComponent, uid }) => {
 							<FontAwesome name="search" size={20} color={"#c13584"} />
 						}
 						maxHeight={150}
-						boxStyles={{ borderColor: "#d6d3d1" }}
+						boxStyles={{
+							borderColor: "#d6d3d1",
+							borderRadius: "999",
+							paddingVertical: 16,
+						}}
 						labelStyles={{ color: "#d6d3d1" }}
 						defaultOption={{ key: "1", value: "Graffiti" }}
 					/>
 				</View>
 				<View className="flex items-end justify-end h-20">
 					<TouchableOpacity
-						className="flex flex-row items-center justify-center w-full p-3 py-4 my-2 rounded-lg bg-pink border-stone-300"
+						className="flex flex-row items-center justify-center w-full p-3 py-4 my-2 rounded-full bg-pink border-stone-300"
 						onPress={handleSubmit}
 					>
 						<AntDesign name={"mail"} size={20} color="white" />
