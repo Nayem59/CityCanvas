@@ -48,7 +48,7 @@ const Login = ({ navigation }) => {
 					autoCorrect={false}
 				/>
 
-				<View className="flex flex-row justify-between w-full p-3 py-4 my-2 border rounded-full f border-stone-300 focus:border-pink">
+				<View className="flex flex-row justify-between w-full p-3 py-4 my-2 border rounded-full border-stone-300 focus:border-pink ">
 					<TextInput
 						placeholder="Password"
 						value={password}
