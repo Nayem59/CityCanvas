@@ -18,6 +18,7 @@ import * as ImagePicker from "expo-image-picker";
 import { db } from "../firebaseConfig";
 import uuid from "react-native-uuid";
 import Modal from "react-native-modal";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const AddArt = ({ navigation, setRenderComponent, renderComponent, uid }) => {
 	const [username, setUserName] = useState("");
@@ -29,7 +30,7 @@ const AddArt = ({ navigation, setRenderComponent, renderComponent, uid }) => {
 	const [tags, setTags] = useState([]);
 	const [artist, setArtist] = useState("");
 	const [rerender, setRerender] = useState(false);
-
+	const [toggleCameraModel, setToggleCameraModel] = useState(false);
 	const [isModalVisible, setModalVisible] = useState(false);
 
 	useEffect(() => {
@@ -67,6 +68,11 @@ const AddArt = ({ navigation, setRenderComponent, renderComponent, uid }) => {
 			setRenderComponent(!renderComponent);
 		});
 	};
+
+	const takePhoto = (setToggleCameraModel) => {
+		navigation.navigate("TakePhoto", { setToggle: setToggleCameraModel });
+		setToggleCameraModel(false);
+	};
 	const pickImage = async () => {
 		// No permissions request is necessary for launching the image library
 		let result = await ImagePicker.launchImageLibraryAsync({
@@ -75,8 +81,14 @@ const AddArt = ({ navigation, setRenderComponent, renderComponent, uid }) => {
 			aspect: [4, 3],
 			quality: 1,
 		});
+
 		if (!result.canceled) {
+			setToggleCameraModel(false);
 			setImage(result.assets[0].uri);
+		}
+
+		if (image) {
+			setToggleCameraModel(false);
 		}
 	};
 
@@ -127,6 +139,44 @@ const AddArt = ({ navigation, setRenderComponent, renderComponent, uid }) => {
 	return (
 		<SafeAreaView className="items-center w-full h-full bg-white">
 			<Modal
+				isVisible={toggleCameraModel}
+				animationType="slide"
+				animationInTiming={300}
+			>
+				<View className="flex items-center justify-end h-full mb-20">
+					<View className="flex items-center justify-between w-screen p-4 bg-white h-60 gap-y-2 rounded-2xl">
+						<Pressable
+							className="flex flex-row items-center justify-center w-full gap-2"
+							onPress={pickImage}
+						>
+							<FontAwesome name="folder-open" size={24} color="#c13584" />
+							<Text className="mt-2 text-lg font-bold text-center">
+								Open Gallery
+							</Text>
+						</Pressable>
+						<View className="w-full border border-zinc-50"></View>
+
+						<Pressable
+							className="flex flex-row items-center justify-center w-full gap-2"
+							onPress={() => takePhoto(setToggleCameraModel)}
+						>
+							<MaterialIcons name="add-a-photo" size={24} color="#c13584" />
+							<Text className="mt-2 text-lg font-bold text-center">
+								Take a new photo
+							</Text>
+						</Pressable>
+						<Pressable
+							onPress={() => {
+								setToggleCameraModel(false);
+							}}
+							className="w-full border-t border-stone-200"
+						>
+							<Text className="mt-2 text-lg font-bold text-center">close</Text>
+						</Pressable>
+					</View>
+				</View>
+			</Modal>
+			<Modal
 				isVisible={isModalVisible}
 				animationType="slide"
 				animationInTiming={300}
@@ -170,7 +220,7 @@ const AddArt = ({ navigation, setRenderComponent, renderComponent, uid }) => {
 								size={20}
 								color={"#c13584"}
 								style={{ marginLeft: 10 }}
-								onPress={pickImage}
+								onPress={() => setToggleCameraModel(true)}
 							/>
 						</TouchableOpacity>
 					</View>
