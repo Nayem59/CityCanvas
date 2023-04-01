@@ -6,13 +6,20 @@ import {
 	SafeAreaView,
 	Button,
 	Image,
+	TouchableOpacity,
 } from "react-native";
 import { useEffect, useRef, useState } from "react";
 import { Camera } from "expo-camera";
 import { shareAsync } from "expo-sharing";
 import * as MediaLibrary from "expo-media-library";
+import { Feather, AntDesign, Entypo } from "@expo/vector-icons";
 
-export default function App() {
+export default function TakePhoto({ navigation, route }) {
+	// const { setToggle } = route.params;
+	let toggler;
+
+	route.params ? (toggler = route.params.setToggle) : (toggler = null);
+	console.log(toggler);
 	let cameraRef = useRef();
 	const [hasCameraPermission, setHasCameraPermission] = useState();
 	const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
@@ -60,28 +67,65 @@ export default function App() {
 			MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
 				setPhoto(undefined);
 			});
+			navigation.navigate("AddArt");
+			if (toggler) {
+				toggler(true);
+			}
 		};
 
 		return (
-			<SafeAreaView style={styles.container}>
+			<SafeAreaView className="flex flex-1 bg-black">
 				<Image
 					style={styles.preview}
 					source={{ uri: "data:image/jpg;base64," + photo.base64 }}
 				/>
-				<Button title="Share" onPress={sharePic} />
-				{hasMediaLibraryPermission ? (
-					<Button title="Save" onPress={savePhoto} />
-				) : undefined}
-				<Button title="Discard" onPress={() => setPhoto(undefined)} />
+				<View className="flex flex-row items-center justify-between mx-3 opacity-80">
+					<TouchableOpacity
+						onPress={sharePic}
+						className="flex items-center justify-center p-7 gap-y-1"
+					>
+						<Feather name="share" size={24} color="#C13584" />
+						<Text className="text-lg text-stone-500">Share</Text>
+					</TouchableOpacity>
+					{hasMediaLibraryPermission ? (
+						<TouchableOpacity
+							onPress={savePhoto}
+							className="flex items-center justify-center p-7 gap-y-1"
+						>
+							<Feather name="save" size={24} color="#C13584" />
+							<Text className="text-lg text-center text-stone-500 ">Save</Text>
+						</TouchableOpacity>
+					) : undefined}
+					<TouchableOpacity
+						onPress={() => setPhoto(undefined)}
+						className="flex items-center justify-center p-7 gap-y-1"
+					>
+						<AntDesign name="close" size={24} color="#C13584" />
+						<Text className="text-lg text-center text-stone-500 ">Discard</Text>
+					</TouchableOpacity>
+				</View>
 			</SafeAreaView>
 		);
 	}
 
 	return (
 		<Camera style={styles.container} ref={cameraRef}>
-			<View style={styles.buttonContainer}>
-				<Button title="Take Pic" onPress={takePic} />
-			</View>
+			{/* <View className="flex items-center justify-end w-full h-full mb-10">
+				<TouchableOpacity
+					onPress={takePic}
+					className="items-end justify-center w-20 h-20 p-2 border border-2 rounded-full border-pink"
+					activeOpacity={0.7}
+				>
+					<View className="w-full h-full border rounded-full bg-pink border-pink"></View>
+				</TouchableOpacity>
+			</View> */}
+			<TouchableOpacity
+				className="flex items-center justify-end w-full h-full mb-10"
+				activeOpacity={0.7}
+				onPress={takePic}
+			>
+				<Entypo name="picasa" size={80} color="white" />
+			</TouchableOpacity>
 			<StatusBar style="auto" />
 		</Camera>
 	);

@@ -68,12 +68,16 @@ const HomeStack = ({ uid }) => {
 				)}
 			</Tab.Screen>
 			<Tab.Screen
-				name="Camera"
+				name="TakePhoto"
 				component={TakePhoto}
 				options={{
 					tabBarLabel: "Take Photo",
-					tabBarIcon: ({ color, size }) => (
-						<Ionicons name="camera-outline" size={size} color={color} />
+					tabBarIcon: ({ focused, color, size }) => (
+						<Ionicons
+							name={focused ? "camera" : "camera-outline"}
+							size={34}
+							color={focused ? "#C13584" : "#BDBABA"}
+						/>
 					),
 				}}
 			/>
