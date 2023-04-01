@@ -1,39 +1,45 @@
 import {
-  Text,
-  SafeAreaView,
-  TouchableOpacity,
-  Alert,
-  View,
+	Text,
+	SafeAreaView,
+	TextInput,
+	Alert,
+	View,
+	TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebaseConfig";
 import Input from "../components/Input";
 import AppButton from "../components/AppButton";
+import { Feather } from "@expo/vector-icons";
 
 const Login = ({ navigation }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [seePassword, setSeePassword] = useState(true);
 
-  const signIn = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then(() => {})
-      .catch((error) => {
-        console.log(error);
-        Alert.alert("Wrong email or password");
-      });
-  };
+	const icon = seePassword ? "eye" : "eye-off";
 
-  const SignUp = () => {
-    navigation.navigate("SignUp");
-  };
+	const signIn = () => {
+		signInWithEmailAndPassword(auth, email, password)
+			.then(() => {})
+			.catch((error) => {
+				console.log(error);
+				Alert.alert("Wrong email or password");
+			});
+	};
+
+	const SignUp = () => {
+		navigation.navigate("SignUp");
+	};
 
 	return (
 		<SafeAreaView className="w-full h-full bg-white">
-			<Text className="mt-10 mb-20 text-3xl text-center">
-				Welcome to <Text className="font-bold text-pink">City Canvas</Text>
-			</Text>
-			<View className="flex items-center justify-center w-10/12 mx-auto mb-10">
+			<View className="flex items-center justify-center mt-10 mb-10">
+				<Text className="text-2xl text-stone-600">Welcome to</Text>
+				<Text className="text-4xl font-bold text-pink">City Canvas</Text>
+			</View>
+			<View className="flex items-center justify-center w-10/12 mx-auto mb-10 ">
 				<Input
 					placeholder="Email"
 					value={email}
@@ -41,13 +47,28 @@ const Login = ({ navigation }) => {
 					autoCapitalize="none"
 					autoCorrect={false}
 				/>
-				<Input
-					placeholder="Password"
-					value={password}
-					setState={setPassword}
-					secure={true}
-					autoCorrect={false}
-				/>
+
+				<View className="flex flex-row justify-between w-full p-3 py-4 my-2 border rounded-full border-stone-300 focus:border-pink ">
+					<TextInput
+						placeholder="Password"
+						value={password}
+						onChangeText={(input) => setPassword(input)}
+						autoCapitalize={true}
+						secureTextEntry={seePassword}
+						autoCorrect={true}
+					/>
+					<TouchableOpacity
+						onPress={() => setSeePassword(!seePassword)}
+						className="px-2"
+					>
+						<Feather
+							name={icon}
+							size={20}
+							color={seePassword ? "#d3d3d3" : "#C13584"}
+						/>
+					</TouchableOpacity>
+				</View>
+
 				<AppButton
 					title={"sign in"}
 					handlePress={signIn}
@@ -64,27 +85,27 @@ const Login = ({ navigation }) => {
 				<View></View>
 			</View>
 
-      <View className="flex items-center justify-center w-10/12 mx-auto mt-6 h-96 ">
-        <AppButton
-          title={"Sign in with Apple"}
-          primary={false}
-          icon={"apple1"}
-        />
-        <AppButton
-          title={"Sign in with GOOGLE"}
-          primary={false}
-          icon={"google"}
-        />
-        <Text className="mt-20 mb-2 text-stone-500">Not signed up yet?</Text>
-        <AppButton
-          title={"Create an account"}
-          handlePress={SignUp}
-          primary={true}
-          icon={"adduser"}
-        />
-      </View>
-    </SafeAreaView>
-  );
+			<View className="flex items-center justify-center w-10/12 mx-auto mt-6 h-96 ">
+				<AppButton
+					title={"Sign in with Apple"}
+					primary={false}
+					icon={"apple1"}
+				/>
+				<AppButton
+					title={"Sign in with GOOGLE"}
+					primary={false}
+					icon={"google"}
+				/>
+				<Text className="mt-20 mb-2 text-stone-500">Not signed up yet?</Text>
+				<AppButton
+					title={"Create an account"}
+					handlePress={SignUp}
+					primary={true}
+					icon={"adduser"}
+				/>
+			</View>
+		</SafeAreaView>
+	);
 };
 
 export default Login;

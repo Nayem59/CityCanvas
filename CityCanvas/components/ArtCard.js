@@ -6,11 +6,15 @@ import LikeArt from "./LikeArt";
 const ArtCard = ({ item, route }) => {
 	return (
 		<View
-			className="flex-row my-2 border rounded-3xl border-stone-100"
+			className="flex-row mx-auto my-2 border w-96 rounded-3xl border-stone-100"
 			style={{
 				shadowColor: "#000",
-				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 0.05,
+				backgroundColor: "white",
+				shadowOffset: {
+					width: 0,
+					height: 2,
+				},
+				shadowOpacity: 0.2,
 				shadowRadius: 2,
 			}}
 		>
@@ -32,14 +36,16 @@ const ArtCard = ({ item, route }) => {
 						By {item.artist ? item.artist : "Unknown"}
 					</Text>
 				</View>
+				<View></View>
+
 				<View>
-					<Text className="h-6 my-2 text-stone-800 ">
+					<Text className="h-10 my-2 overflow-auto">
 						<Ionicons name="location-sharp" size={18} color="#a8a29e" />
 						{item.address_building_number} {item.address_street},{" "}
 						{item.address_city}
 					</Text>
 				</View>
-				<View className="flex items-end justify-end w-full mt-6">
+				<View className="flex items-end justify-end w-full mt-4">
 					<LikeArt itemId={item.id} item={item} />
 				</View>
 			</View>
