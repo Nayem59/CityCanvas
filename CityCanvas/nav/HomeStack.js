@@ -83,7 +83,6 @@ const HomeStack = ({ uid }) => {
 			/>
 			<Tab.Screen
 				name="Profile"
-				// component={Profile}
 				options={{
 					tabBarLabel: "Profile",
 					tabBarIcon: ({ focused }) => (

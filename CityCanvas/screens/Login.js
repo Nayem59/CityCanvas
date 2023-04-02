@@ -53,9 +53,10 @@ const Login = ({ navigation }) => {
 						placeholder="Password"
 						value={password}
 						onChangeText={(input) => setPassword(input)}
-						autoCapitalize={true}
+						autoCapitalize="none"
 						secureTextEntry={seePassword}
 						autoCorrect={true}
+						className="w-52"
 					/>
 					<TouchableOpacity
 						onPress={() => setSeePassword(!seePassword)}

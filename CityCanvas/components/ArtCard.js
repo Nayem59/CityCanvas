@@ -6,7 +6,7 @@ import LikeArt from "./LikeArt";
 const ArtCard = ({ item, route }) => {
 	return (
 		<View
-			className="flex-row mx-auto my-2 border w-96 rounded-3xl border-stone-100"
+			className="flex-row mx-auto my-2 border rounded-lg w-96 border-stone-100"
 			style={{
 				shadowColor: "#000",
 				backgroundColor: "white",
@@ -20,7 +20,7 @@ const ArtCard = ({ item, route }) => {
 		>
 			<View className="h-40 w-36">
 				<Image
-					className="w-full h-full rounded rounded-r-none rounded-l-3xl"
+					className="w-full h-full rounded rounded-l-lg rounded-r-none"
 					src={item.image}
 				/>
 			</View>

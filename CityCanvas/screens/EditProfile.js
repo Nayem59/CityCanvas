@@ -91,7 +91,7 @@ const EditProfile = ({ navigation, user, uid, setProfileChange }) => {
 							icon={"save"}
 						/>
 						<AppButton
-							handlePress={() => navigation.goBack()}
+							handlePress={() => navigation.navigate("Profile")}
 							title="Back to profile"
 							primary={false}
 							icon={"arrowleft"}

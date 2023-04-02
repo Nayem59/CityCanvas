@@ -19,7 +19,6 @@ export default function TakePhoto({ navigation, route }) {
 	let toggler;
 
 	route.params ? (toggler = route.params.setToggle) : (toggler = null);
-	console.log(toggler);
 	let cameraRef = useRef();
 	const [hasCameraPermission, setHasCameraPermission] = useState();
 	const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
