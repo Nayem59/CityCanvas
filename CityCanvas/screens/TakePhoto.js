@@ -109,8 +109,8 @@ export default function TakePhoto({ navigation, route }) {
 
 	return (
 		<Camera style={styles.container} ref={cameraRef}>
-			{/* <View className="flex items-center justify-end w-full h-full mb-10">
-				<TouchableOpacity
+			{/* <View className="flex items-center justify-end w-full h-full mb-10"> */}
+			{/* <TouchableOpacity
 					onPress={takePic}
 					className="items-end justify-center w-20 h-20 p-2 border border-2 rounded-full border-pink"
 					activeOpacity={0.7}
@@ -123,7 +123,7 @@ export default function TakePhoto({ navigation, route }) {
 				activeOpacity={0.7}
 				onPress={takePic}
 			>
-				<Entypo name="picasa" size={80} color="white" />
+				<Entypo name="picasa" size={80} color="#C13584" />
 			</TouchableOpacity>
 			<StatusBar style="auto" />
 		</Camera>
