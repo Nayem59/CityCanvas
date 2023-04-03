@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import TabNavTop from "../nav/TabNavTop";
 import StreetArtInfo from "../screens/StreetArtInfo";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Comments from "./Comments";
 
 const Stack = createNativeStackNavigator();
 const Home = ({ objectProp }) => {
@@ -30,6 +31,7 @@ const Home = ({ objectProp }) => {
             <StreetArtInfo {...props} locationBristol={locationBristol} />
           )}
         </Stack.Screen>
+        <Stack.Screen name="Comments" component={Comments} />
       </Stack.Navigator>
     </SafeAreaView>
   );
