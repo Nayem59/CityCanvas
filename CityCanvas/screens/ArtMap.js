@@ -34,6 +34,7 @@ const ArtMap = ({ objectProp, locationBristol }) => {
         setIsLoading(false);
       });
     }
+
     getArtWork();
     const getPermissions = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -52,14 +53,15 @@ const ArtMap = ({ objectProp, locationBristol }) => {
         longitude: 0,
       };
     }
+
     const { latitude, longitude } = location.location_geopoint;
-    const { title, image, address_postcode, address_street, likes_count } =
-      location;
+    const { title, image, address_postcode, address_street, tags } = location;
+
     const id = uuid.v4();
 
     const myLocation = `${locationBristol.latitude}, ${locationBristol.longitude}`;
     const latLng = `${latitude},${longitude}`;
-
+    console.log(tags);
     return (
       <Marker
         tracksViewChanges={false}
@@ -88,12 +90,17 @@ const ArtMap = ({ objectProp, locationBristol }) => {
               />
             </Text>
             <View className="flex flex-col mt-1 gap-1-2">
-              <Text className="w-full font-bold text-pink">
+              <Text className="w-full font-bold text-pink text">
                 {title ? title : "Untitled"}
               </Text>
-              <View className="flex flex-row items-center gap-1 p-1">
-                <AntDesign name="heart" size={20} color="gray" />
-                <Text className="w-full">{likes_count}</Text>
+              <View className="flex flex-row">
+                {tags.map((tag) => {
+                  return (
+                    <View className="mx-1 my-2 border border-pink rounded-full">
+                      <Text className=" mx-1 p-1">{tag}</Text>
+                    </View>
+                  );
+                })}
               </View>
               <View className="flex flex-row items-center justify-between gap-1 px-2 w-52">
                 <FontAwesome name="map-marker" size={22} color="gray" />

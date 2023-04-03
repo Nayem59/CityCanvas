@@ -127,12 +127,12 @@ const AddArt = ({ navigation, setRenderComponent, renderComponent, uid }) => {
 
   const streetArtTypes = [
     { key: "1", value: "Graffiti" },
-    { key: "2", value: "Stencil Art" },
-    { key: "3", value: "Mural Art" },
-    { key: "4", value: "Sticker Art" },
+    { key: "2", value: "Stencil" },
+    { key: "3", value: "Mural" },
+    { key: "4", value: "Sticker" },
     { key: "5", value: "Yarn Bombing" },
-    { key: "6", value: "Paste Up Art" },
-    { key: "7", value: "Installation Art" },
+    { key: "6", value: "Paste Up" },
+    { key: "7", value: "Installation" },
     { key: "8", value: "Reverse Graffiti" },
   ];
 
