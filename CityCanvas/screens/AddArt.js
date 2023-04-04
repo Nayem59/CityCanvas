@@ -19,6 +19,39 @@ import { db } from "../firebaseConfig";
 import uuid from "react-native-uuid";
 import Modal from "react-native-modal";
 import { MaterialIcons } from "@expo/vector-icons";
+import * as yup from "yup";
+
+const validFileExtensions = {
+  image: ["jpg", "gif", "png", "jpeg", "svg", "webp"],
+};
+const MAX_FILE_SIZE = 102400 * 30;
+function isValidFileType(fileName, fileType) {
+  return (
+    fileName &&
+    validFileExtensions[fileType].indexOf(fileName.split(".").pop()) > -1
+  );
+}
+let schema = yup.object().shape({
+  // image: yup
+  //   .mixed()
+  //   .required("Required")
+  //   .test("is-valid-type", "Not a valid image type", (value) => {
+  //     console.log(value);
+  //     console.log(value.name, "<<<< name");
+  //     isValidFileType(value && value.toLowerCase(), "image");
+  //   }),
+  // .test("is-valid-size", "Max allowed size is 3MB", (value) => {
+  //   value && value.size <= MAX_FILE_SIZE;
+  // })
+  title: yup.string().max(30, "maximum of 30 characters!"),
+  artist: yup
+    .string()
+    .min(2, "artist too short!")
+    .max(100, "maximum of 30 characters!")
+    .required("Required"),
+  description: yup.string().min(20, "desc too short").required("Required"),
+  date_created: yup.string().required("Required"),
+});
 
 const AddArt = ({ navigation, setRenderComponent, renderComponent, uid }) => {
   const [username, setUserName] = useState("");
@@ -32,6 +65,7 @@ const AddArt = ({ navigation, setRenderComponent, renderComponent, uid }) => {
   const [rerender, setRerender] = useState(false);
   const [toggleCameraModel, setToggleCameraModel] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isErrorModalVisible, setIsErrorModalVisible] = useState(false);
 
   useEffect(() => {
     const docRef = doc(db, "users", uid);
@@ -54,19 +88,27 @@ const AddArt = ({ navigation, setRenderComponent, renderComponent, uid }) => {
       artist,
       username,
     };
-    const docRef = doc(db, "art", uuid.v4());
-    setDoc(docRef, object).then(() => {
-      setImage("");
-      setTitle("");
-      setDescription("");
-      setLocation({});
-      setDate(new Date());
-      setArtist("");
-      setTags([]);
-      setRerender(!rerender);
-      setModalVisible(true);
-      setRenderComponent(!renderComponent);
-    });
+    schema
+      .validate(object)
+      .then(() => {
+        const docRef = doc(db, "art", uuid.v4());
+        setDoc(docRef, object).then(() => {
+          setImage("");
+          setTitle("");
+          setDescription("");
+          setLocation({});
+          setDate(new Date());
+          setArtist("");
+          setTags([]);
+          setRerender(!rerender);
+          setModalVisible(true);
+          setRenderComponent(!renderComponent);
+        });
+      })
+      .catch((err) => {
+        console.log(err.toString());
+        setIsErrorModalVisible(true);
+      });
   };
 
   const takePhoto = (setToggleCameraModel) => {
@@ -191,6 +233,30 @@ const AddArt = ({ navigation, setRenderComponent, renderComponent, uid }) => {
               onPress={() => {
                 navigation.navigate("Home");
                 setModalVisible(false);
+              }}
+              className="w-full border-t border-stone-200"
+            >
+              <Text className="mt-2 text-lg font-bold text-center">
+                Back to Home
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+      <Modal
+        isVisible={isErrorModalVisible}
+        animationType="slide"
+        animationInTiming={300}
+      >
+        <View className="flex items-center justify-center">
+          <View className="flex items-center justify-between h-48 p-4 bg-white w-60 gap-y-2 rounded-2xl">
+            <Text className="w-full text-xl text-center text-stone-400 color-black">
+              Please fill in required field(s)
+            </Text>
+            <AntDesign name="closecircle" size={50} color="#960018" />
+            <Pressable
+              onPress={() => {
+                setIsErrorModalVisible(false);
               }}
               className="w-full border-t border-stone-200"
             >
