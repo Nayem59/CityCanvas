@@ -29,16 +29,16 @@ const Comments = ({ route, uid }) => {
     );
     const date = firebaseTime.toDateString().slice(4);
     const hours = firebaseTime.toLocaleTimeString();
-    console.log(`${date} ${hours}`);
     return `${date} ${hours}`;
   };
 
   useEffect(() => {
     setLoading(true);
     const commentsRef = collection(db, "art", id, "Comments");
+    const timeStampQuery = query(commentsRef, orderBy("timeCommented"));
+    console.log(timeStampQuery);
     const userDocRef = doc(db, "users", uid);
-    getDocs(commentsRef).then((commentsSnapShot) => {
-      console.log(commentsSnapShot, "<<<commentsSnapShot");
+    getDocs(timeStampQuery).then((commentsSnapShot) => {
       const commentsList = commentsSnapShot.docs.map((doc) => {
         const singleDoc = doc.data();
         return { ...singleDoc };
