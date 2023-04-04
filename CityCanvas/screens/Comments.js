@@ -4,19 +4,24 @@ import { db } from "../firebaseConfig";
 import {
   doc,
   setDoc,
+  getDoc,
   getDocs,
   collection,
   Timestamp,
+  query,
+  orderBy,
 } from "firebase/firestore";
 import { FlatList } from "react-native-gesture-handler";
 import AppButton from "../components/AppButton";
 import uuid from "react-native-uuid";
 
-const Comments = ({ route }) => {
+const Comments = ({ route, uid }) => {
   const [allComments, setAllComments] = useState([]);
   const [text, setText] = useState("");
   const [commented, setCommented] = useState(false);
   const { image, id } = route.params;
+  const [username, setUsername] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const condensedTime = (time) => {
     const firebaseTime = new Date(
@@ -24,24 +29,36 @@ const Comments = ({ route }) => {
     );
     const date = firebaseTime.toDateString().slice(4);
     const hours = firebaseTime.toLocaleTimeString();
+    console.log(`${date} ${hours}`);
     return `${date} ${hours}`;
   };
 
   useEffect(() => {
+    setLoading(true);
     const commentsRef = collection(db, "art", id, "Comments");
+    const userDocRef = doc(db, "users", uid);
     getDocs(commentsRef).then((commentsSnapShot) => {
+      console.log(commentsSnapShot, "<<<commentsSnapShot");
       const commentsList = commentsSnapShot.docs.map((doc) => {
         const singleDoc = doc.data();
         return { ...singleDoc };
       });
       setAllComments(commentsList);
+      setLoading(false);
+    });
+    getDoc(userDocRef).then((user) => {
+      const userData = user.data();
+      setUsername(userData.username);
+      setLoading(false);
     });
   }, [commented]);
+
+  // console.log(allComments[0].timeCommented);
 
   const submitComment = () => {
     const commentRef = doc(db, "art", id, "Comments", uuid.v4());
     const commentObj = {
-      Username: "nayem123",
+      Username: username,
       comment: text,
       timeCommented: new Date(),
     };
@@ -51,6 +68,14 @@ const Comments = ({ route }) => {
       setCommented(!commented);
     });
   };
+
+  if (loading) {
+    return (
+      <View>
+        <Text>Loading ...</Text>
+      </View>
+    );
+  }
 
   return (
     <View>
@@ -82,6 +107,7 @@ const Comments = ({ route }) => {
                 <Text className="font-bold">{item.Username}</Text>
                 <Text className="px-10">{item.comment}</Text>
                 <Text className="text-right">
+                  {/* {item.timeCommented} */}
                   {condensedTime(item.timeCommented)}
                 </Text>
               </View>

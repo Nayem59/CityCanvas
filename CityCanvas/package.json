@@ -32,7 +32,7 @@
     "pod-install": "^0.1.38",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-native": "0.71.4",
+    "react-native": "0.71.6",
     "react-native-dropdown-select-list": "^2.0.4",
     "react-native-gesture-handler": "~2.9.0",
     "react-native-image-picker": "^5.3.1",
