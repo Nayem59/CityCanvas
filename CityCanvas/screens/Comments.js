@@ -1,4 +1,4 @@
-import { View, Text, Image, TextInput } from "react-native";
+import { View, Text, Image, TextInput, Alert } from "react-native";
 import React, { useEffect, useState } from "react";
 import { db } from "../firebaseConfig";
 import {
@@ -14,7 +14,11 @@ import {
 import { FlatList } from "react-native-gesture-handler";
 import AppButton from "../components/AppButton";
 import uuid from "react-native-uuid";
+import * as yup from "yup";
 
+let schema = yup.object().shape({
+  comment: yup.string().min(2).required(),
+});
 const Comments = ({ route, uid }) => {
   const [allComments, setAllComments] = useState([]);
   const [text, setText] = useState("");
@@ -35,8 +39,7 @@ const Comments = ({ route, uid }) => {
   useEffect(() => {
     setLoading(true);
     const commentsRef = collection(db, "art", id, "Comments");
-    const timeStampQuery = query(commentsRef, orderBy("timeCommented"));
-    console.log(timeStampQuery);
+    const timeStampQuery = query(commentsRef, orderBy("timeCommented", "desc"));
     const userDocRef = doc(db, "users", uid);
     getDocs(timeStampQuery).then((commentsSnapShot) => {
       const commentsList = commentsSnapShot.docs.map((doc) => {
@@ -53,8 +56,6 @@ const Comments = ({ route, uid }) => {
     });
   }, [commented]);
 
-  // console.log(allComments[0].timeCommented);
-
   const submitComment = () => {
     const commentRef = doc(db, "art", id, "Comments", uuid.v4());
     const commentObj = {
@@ -62,11 +63,19 @@ const Comments = ({ route, uid }) => {
       comment: text,
       timeCommented: new Date(),
     };
-    setDoc(commentRef, commentObj).then(() => {
-      console.log("commented successfully");
-      setText("");
-      setCommented(!commented);
-    });
+    schema
+      .validate(commentObj)
+      .then(() => {
+        setDoc(commentRef, commentObj).then(() => {
+          console.log("commented successfully");
+          setText("");
+          setCommented(!commented);
+        });
+      })
+      .catch((err) => {
+        const [message] = err.errors;
+        Alert.alert(message);
+      });
   };
 
   if (loading) {
