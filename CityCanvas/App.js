@@ -6,29 +6,28 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebaseConfig";
 
 export default function App() {
-  const [initialising, setInitialising] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [uid, setUid] = useState("");
+	const [initialising, setInitialising] = useState(true);
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [uid, setUid] = useState("");
+	useEffect(() => {
+		setInitialising(true);
+		onAuthStateChanged(auth, (user) => {
+			if (user) {
+				setUid(user.uid);
+				setIsLoggedIn(true);
+				setInitialising(false);
+			} else {
+				setIsLoggedIn(false);
+				setInitialising(false);
+			}
+		});
+	}, [uid]);
 
-  useEffect(() => {
-    setInitialising(true);
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUid(user.uid);
-        setIsLoggedIn(true);
-        setInitialising(false);
-      } else {
-        setIsLoggedIn(false);
-        setInitialising(false);
-      }
-    });
-  }, [uid]);
+	if (initialising) return null;
 
-  if (initialising) return null;
-
-  return (
-    <NavigationContainer>
-      {isLoggedIn ? <HomeStack uid={uid} /> : <LoginStack />}
-    </NavigationContainer>
-  );
+	return (
+		<NavigationContainer>
+			{isLoggedIn ? <HomeStack uid={uid} /> : <LoginStack />}
+		</NavigationContainer>
+	);
 }
