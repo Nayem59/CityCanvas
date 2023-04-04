@@ -14,6 +14,7 @@ import { Entypo } from "@expo/vector-icons";
 import AppButton from "../components/AppButton";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import Comments from "./Comments";
 
 const StreetArtInfo = ({ route, navigation, locationBristol }) => {
   const [artInfo, setArtInfo] = useState({});
@@ -96,8 +97,16 @@ const StreetArtInfo = ({ route, navigation, locationBristol }) => {
             </View>
 
             <View className="mt-3 text-stone-500">
-              <AppButton title={"Comments"} icon={"message1"} />
-
+              <AppButton
+                title={"Comments"}
+                icon={"message1"}
+                handlePress={() =>
+                  navigation.navigate("Comments", {
+                    image: artInfo.image,
+                    id: id,
+                  })
+                }
+              />
               <TouchableOpacity
                 className="flex flex-row items-center justify-center w-full p-3 py-4 my-2 rounded-full bg-pink border-stone-300"
                 onPress={() => {
