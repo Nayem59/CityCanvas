@@ -1,4 +1,4 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TextInput } from "react-native";
 import React, { useEffect, useState } from "react";
 import { db } from "../firebaseConfig";
 import {
@@ -9,64 +9,81 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import { FlatList } from "react-native-gesture-handler";
+import AppButton from "../components/AppButton";
+import uuid from "react-native-uuid";
 
 const Comments = ({ route }) => {
   const [allComments, setAllComments] = useState([]);
-  const { image } = route.params;
+  const [text, setText] = useState("");
+  const [commented, setCommented] = useState(false);
+  const { image, id } = route.params;
+
   const condensedTime = (time) => {
     const firebaseTime = new Date(
       time.seconds * 1000 + time.nanoseconds / 1000000
     );
     const date = firebaseTime.toDateString().slice(4);
     const hours = firebaseTime.toLocaleTimeString();
-    
-   return `${date} ${hours}`;
-
-    // const timeProblem = time.toDateString()
-    // const date = new Date(timeProblem)
-    // const year = date.getFullYear()
-    // const month = date.getMonth()
-    // const day = date.getDate()
-    // const hours = date.getHours()
-    // const minutes = date.getMinutes()
-    // return `${day}/${month}/${year} ${hours}:${minutes}`
-    // return date.toDateString()
+    return `${date} ${hours}`;
   };
 
   useEffect(() => {
-    const commentRef = collection(
-      db,
-      "art",
-      "5yLZ71JCQDx3LnlnBDwC",
-      "Comments"
-    );
-    getDocs(commentRef).then((commentsSnapShot) => {
+    const commentsRef = collection(db, "art", id, "Comments");
+    getDocs(commentsRef).then((commentsSnapShot) => {
       const commentsList = commentsSnapShot.docs.map((doc) => {
         const singleDoc = doc.data();
         return { ...singleDoc };
       });
       setAllComments(commentsList);
     });
-  }, []);
+  }, [commented]);
+
+  const submitComment = () => {
+    const commentRef = doc(db, "art", id, "Comments", uuid.v4());
+    const commentObj = {
+      Username: "nayem123",
+      comment: text,
+      timeCommented: new Date(),
+    };
+    setDoc(commentRef, commentObj).then(() => {
+      console.log("commented successfully");
+      setText("");
+      setCommented(!commented);
+    });
+  };
 
   return (
     <View>
-      <Text>Comments</Text>
       <View className="px-2">
         <Image
           src={image}
           className="w-full h-60 rounded rounded-r-none rounded-3xl"
         />
+        <View className="p-2">
+          <TextInput
+            className="border p-5"
+            onChangeText={setText}
+            value={text}
+            placeholder="add a comment..."
+            multiline={true}
+          />
+          <AppButton
+            title="Comment"
+            primary={true}
+            handlePress={submitComment}
+          />
+        </View>
         <FlatList
+          className="border h-1/2"
           data={allComments}
           renderItem={({ item }) => {
             return (
-              <View>
-                <Text>{item.Username}</Text>
-                <Text>{item.comment}</Text>
-                <Text>{condensedTime(item.timeCommented)}</Text>
-                {/* <Text>{item.timeCommented.toDate().toTimeString().slice(0,5)} </Text>
-                <Text>{item.timeCommented.toDate().toLocaleString()} I WANT THIS: 02/04/2023</Text> */}
+              <View className="border rounded-full px-7 my-1">
+                <Text className="font-bold">{item.Username}</Text>
+                <Text className="px-10">{item.comment}</Text>
+                <Text className="text-right">
+                  {condensedTime(item.timeCommented)}
+                </Text>
               </View>
             );
           }}

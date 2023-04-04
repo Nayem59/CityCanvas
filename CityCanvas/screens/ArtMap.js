@@ -61,7 +61,6 @@ const ArtMap = ({ objectProp, locationBristol }) => {
 
     const myLocation = `${locationBristol.latitude}, ${locationBristol.longitude}`;
     const latLng = `${latitude},${longitude}`;
-    console.log(tags);
     return (
       <Marker
         tracksViewChanges={false}

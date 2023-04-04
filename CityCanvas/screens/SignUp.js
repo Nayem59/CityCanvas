@@ -67,7 +67,7 @@ const SignUp = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView className="bg-white h-full">
       <Formik
         initialValues={{
           firstName: "",
