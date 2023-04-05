@@ -6,6 +6,7 @@ import {
 	Alert,
 	ActivityIndicator,
 	TouchableOpacity,
+	ScrollView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { db } from "../firebaseConfig";
@@ -152,9 +153,9 @@ const Comments = ({ route, uid, navigation }) => {
 										shadowRadius: 2,
 									}}
 								>
-									<View className="flex flex-row items-center justify-start">
+									<View className="flex flex-row items-center justify-start mb-2">
 										{userImage && item.Username === username ? (
-											<View className="flex items-center justify-center w-4 h-8 my-8 mr-1 rounded-full">
+											<View className="flex items-center justify-center w-12 h-12 my-1 border rounded-full border-stone-200">
 												<Image
 													source={{
 														uri: userImage,
@@ -165,7 +166,12 @@ const Comments = ({ route, uid, navigation }) => {
 												/>
 											</View>
 										) : (
-											<FontAwesome name="user-circle" size={20} color="gray" />
+											<FontAwesome
+												name="user-circle"
+												size={44}
+												color="gray"
+												style={{ marginRight: 1 }}
+											/>
 										)}
 
 										<Text className="p-4 pl-1 text-gray-600">
